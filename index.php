@@ -11,11 +11,11 @@ function testInput($data)
     return $data;
 }
 define('_ROOT_PATH', dirname(__FILE__));  
-$actions = array('addbook', 'adduser', 'form', 'home','logout','books','borrowedbooks','users'); 
-$action = 'form'; 
+$actions = array('home', 'register', 'login', 'lobby','post','settings','postval','users'); 
+$action = 'home'; 
 
 try { 
-    $db = new PDO('mysql:host=localhost;dbname=pdo;port=3306', 'root','', array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+    $db = new PDO('mysql:host=localhost;dbname=siproject;port=3306', 'root','', array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
     
     }  
     catch (PDOException $e) { 

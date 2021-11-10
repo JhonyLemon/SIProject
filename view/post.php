@@ -19,6 +19,7 @@
                 <td>Id</td>
                 <td>Title</td>
                 <td>Authors</td>
+                <td>Number</td>
                 <td>Akcja</td>
             </tr>
             <?php
@@ -27,7 +28,9 @@
                    echo "<td>".$book['id']."</td>";
                    echo "<td>".$book['title']."</td>";
                    echo "<td>".$book['authors']."</td>";
-                   echo "<td><a href=\"index.php?action=borrowedbooks&id={$book['id']}\">oddaj</a></td>";
+                   echo "<td>".$book['number']."</td>";
+                   if($book['number']>0 && !in_array($book['id'],array_column($user_books, 'idbook')))
+                   echo "<td><a href=\"index.php?action=books&id={$book['id']}\">pożycz</a></td>";
                    echo "</tr>";
                }
 
