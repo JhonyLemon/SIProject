@@ -1,0 +1,167 @@
+html,body{
+    background-color: #c0c0c0;
+    height: calc(100% - 4px);
+    margin: 2px;
+    min-height: 630px;
+    min-width: 600px;
+}
+header{
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    height: calc(10% - 4px);
+    background-color: #0d3f82;
+    border-bottom: 4px solid #466da1;
+}
+section{
+    min-height: 80%;
+    background-color: white;
+}
+footer{
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+    border-top: 4px solid #466da1;
+    height: calc(10% - 4px);
+    background-color: #0d3f82;
+    padding-left:2%;
+    color: white;
+}
+#buttons{
+    position: relative;
+    left: 0.5%;
+    margin-left: 1%;
+    width: 90%;
+    height: 100%;
+    top: 10px;
+    
+} 
+.button{
+    position: relative;
+    background-color: #3e6ead;
+    color: white;
+    padding: 4px;
+    text-align: center;
+    text-decoration: none;
+    display: inline;
+    font-size: 16px;
+    margin: 4px 2px;
+    border-style: hidden;
+}
+h1{
+    margin: 0px;
+    margin-bottom: 30px;
+    width: 80%;
+    font-size: 40px;
+    position: relative;
+    top: 20px;
+    left: 30px;
+}
+.main{
+    position: relative;
+    left: 100px;
+    top: 40px; 
+}
+form{
+    width: 600px;
+}
+
+fieldset{
+    border: 2px dashed gray;
+}
+
+input[type="text"],[type="password"],[type="file"]{
+    border: 1px solid;
+    padding: 6px;
+    width: 260px;
+    box-sizing: border-box;
+}
+select{
+    border: 1px solid;
+    padding: 6px;
+    width: 260px;
+}
+input[type="submit"]{
+    display: block;
+    margin: 0;
+    padding: 6px;
+    margin-left: 115px;
+    
+}
+label {
+    display: inline-block;
+    width: 80px;
+    text-align: right;
+    margin-right: 40px;
+  }
+ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+li{
+      margin-bottom: 10px;
+  }
+.error{
+    color: red;
+    display: inline-block;
+    position: relative;
+    margin-left: 85px;
+    width: 200px;
+}
+.hide{
+    display: none;
+}
+h2{
+    position: relative;
+    left: 100px;
+}
+.img
+{
+    position: relative;
+    left: 50px;
+    top: 100px;
+    margin: 0px;
+    max-width: 800px;
+}
+table, th, td {
+    border: 1px solid black;
+  }
+table{
+    position: relative;
+    left: 100px;
+    border-collapse: collapse;
+    width: 60%;
+    text-align: center;
+  }
+  th{
+    color: white;
+    background-color: #3e6ead;
+    height: 40px;
+  }
+  td{
+      height: 40px;
+  }
+
+
+ .alert {
+    padding: 20px;
+    background-color: #f44336;
+    color: white;
+    margin-bottom: 15px;
+  }
+  .ok {
+    padding: 20px;
+    background-color: #3a830f;
+    color: white;
+    margin-bottom: 15px;
+  }
+  .closebtn {
+    margin-left: 15px;
+    color: white;
+    font-weight: bold;
+    float: right;
+    font-size: 22px;
+    line-height: 20px;
+    cursor: pointer;
+    transition: 0.3s;
+  } 
+  
