@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Czas generowania: 10 Lis 2021, 20:14
+-- Czas generowania: 11 Lis 2021, 15:51
 -- Wersja serwera: 10.4.21-MariaDB
 -- Wersja PHP: 8.0.11
 
@@ -32,8 +32,73 @@ CREATE TABLE `comments` (
   `IDparent` int(10) UNSIGNED NOT NULL,
   `IDuser` int(11) UNSIGNED NOT NULL,
   `IDpost` int(11) UNSIGNED NOT NULL,
-  `text` text NOT NULL
+  `text` text NOT NULL,
+  `points` int(11) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
+-- Struktura tabeli dla tabeli `likedcomments`
+--
+
+CREATE TABLE `likedcomments` (
+  `IDcomment` int(11) UNSIGNED NOT NULL,
+  `IDuser` int(11) UNSIGNED NOT NULL,
+  `vote` tinyint(1) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Wyzwalacze `likedcomments`
+--
+DELIMITER $$
+CREATE TRIGGER `dec_points_comment` AFTER INSERT ON `likedcomments` FOR EACH ROW UPDATE users SET points=points-1 WHERE id=NEW.IDuser AND NEW.vote=0
+$$
+DELIMITER ;
+DELIMITER $$
+CREATE TRIGGER `inc_points_comment` AFTER INSERT ON `likedcomments` FOR EACH ROW UPDATE users SET points=points+1 WHERE id=NEW.IDuser AND NEW.vote=1
+$$
+DELIMITER ;
+DELIMITER $$
+CREATE TRIGGER `removepoint_0_comment` AFTER DELETE ON `likedcomments` FOR EACH ROW UPDATE users SET points=points+1 WHERE id=OLD.IDuser AND OLD.vote=0
+$$
+DELIMITER ;
+DELIMITER $$
+CREATE TRIGGER `removepoint_1_comment` AFTER DELETE ON `likedcomments` FOR EACH ROW UPDATE users SET points=points-1 WHERE id=OLD.IDuser AND OLD.vote=1
+$$
+DELIMITER ;
+
+-- --------------------------------------------------------
+
+--
+-- Struktura tabeli dla tabeli `likedposts`
+--
+
+CREATE TABLE `likedposts` (
+  `IDuser` int(11) UNSIGNED NOT NULL,
+  `IDpost` int(11) UNSIGNED NOT NULL,
+  `vote` tinyint(1) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Wyzwalacze `likedposts`
+--
+DELIMITER $$
+CREATE TRIGGER `dec_points_post` AFTER INSERT ON `likedposts` FOR EACH ROW UPDATE users SET points=points-1 WHERE id=NEW.IDuser AND NEW.vote=0
+$$
+DELIMITER ;
+DELIMITER $$
+CREATE TRIGGER `inc_points_post` AFTER INSERT ON `likedposts` FOR EACH ROW UPDATE users SET points=points+1 WHERE id=NEW.IDuser AND NEW.vote=1
+$$
+DELIMITER ;
+DELIMITER $$
+CREATE TRIGGER `removepoint_0_post` AFTER DELETE ON `likedposts` FOR EACH ROW UPDATE users SET points=points+1 WHERE id=OLD.IDuser AND OLD.vote=0
+$$
+DELIMITER ;
+DELIMITER $$
+CREATE TRIGGER `removepoint_1_post` AFTER DELETE ON `likedposts` FOR EACH ROW UPDATE users SET points=points-1 WHERE id=OLD.IDuser AND OLD.vote=1
+$$
+DELIMITER ;
 
 -- --------------------------------------------------------
 
@@ -42,10 +107,11 @@ CREATE TABLE `comments` (
 --
 
 CREATE TABLE `posts` (
-  `id` int(11) UNSIGNED NOT NULL,
+  `IDpost` int(11) UNSIGNED NOT NULL,
   `tittle` text NOT NULL,
   `description` text NOT NULL,
   `file` text NOT NULL,
+  `points` int(11) NOT NULL DEFAULT 0,
   `valid` tinyint(1) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -67,11 +133,13 @@ CREATE TABLE `userposts` (
 --
 
 CREATE TABLE `users` (
-  `id` int(10) UNSIGNED NOT NULL,
+  `IDuser` int(10) UNSIGNED NOT NULL,
   `login` varchar(20) NOT NULL,
+  `email` varchar(40) NOT NULL,
   `password` varchar(64) NOT NULL,
   `permission` enum('admin','moderator','user','') NOT NULL DEFAULT 'user',
-  `birthday` date NOT NULL
+  `birthday` date DEFAULT NULL,
+  `points` int(11) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
@@ -83,27 +151,41 @@ CREATE TABLE `users` (
 --
 ALTER TABLE `comments`
   ADD PRIMARY KEY (`IDcomment`),
-  ADD KEY `IDpost` (`IDpost`),
-  ADD KEY `IDuser` (`IDuser`);
+  ADD KEY `comments_ibfk_1` (`IDpost`),
+  ADD KEY `comments_ibfk_2` (`IDuser`);
+
+--
+-- Indeksy dla tabeli `likedcomments`
+--
+ALTER TABLE `likedcomments`
+  ADD KEY `likedcomments_ibfk_1` (`IDcomment`),
+  ADD KEY `likedcomments_ibfk_2` (`IDuser`);
+
+--
+-- Indeksy dla tabeli `likedposts`
+--
+ALTER TABLE `likedposts`
+  ADD KEY `likedposts_ibfk_1` (`IDpost`),
+  ADD KEY `likedposts_ibfk_2` (`IDuser`);
 
 --
 -- Indeksy dla tabeli `posts`
 --
 ALTER TABLE `posts`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`IDpost`);
 
 --
 -- Indeksy dla tabeli `userposts`
 --
 ALTER TABLE `userposts`
-  ADD KEY `IDpost` (`IDpost`),
-  ADD KEY `IDuser` (`IDuser`);
+  ADD KEY `userposts_ibfk_1` (`IDpost`),
+  ADD KEY `userposts_ibfk_2` (`IDuser`);
 
 --
 -- Indeksy dla tabeli `users`
 --
 ALTER TABLE `users`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`IDuser`);
 
 --
 -- AUTO_INCREMENT dla zrzuconych tabel
@@ -119,13 +201,13 @@ ALTER TABLE `comments`
 -- AUTO_INCREMENT dla tabeli `posts`
 --
 ALTER TABLE `posts`
-  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `IDpost` int(11) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT dla tabeli `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `IDuser` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- Ograniczenia dla zrzutów tabel
@@ -135,15 +217,29 @@ ALTER TABLE `users`
 -- Ograniczenia dla tabeli `comments`
 --
 ALTER TABLE `comments`
-  ADD CONSTRAINT `comments_ibfk_1` FOREIGN KEY (`IDpost`) REFERENCES `posts` (`id`),
-  ADD CONSTRAINT `comments_ibfk_2` FOREIGN KEY (`IDuser`) REFERENCES `users` (`id`);
+  ADD CONSTRAINT `comments_ibfk_1` FOREIGN KEY (`IDpost`) REFERENCES `posts` (`IDpost`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `comments_ibfk_2` FOREIGN KEY (`IDuser`) REFERENCES `users` (`IDuser`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Ograniczenia dla tabeli `likedcomments`
+--
+ALTER TABLE `likedcomments`
+  ADD CONSTRAINT `likedcomments_ibfk_1` FOREIGN KEY (`IDcomment`) REFERENCES `comments` (`IDcomment`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `likedcomments_ibfk_2` FOREIGN KEY (`IDuser`) REFERENCES `users` (`IDuser`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Ograniczenia dla tabeli `likedposts`
+--
+ALTER TABLE `likedposts`
+  ADD CONSTRAINT `likedposts_ibfk_1` FOREIGN KEY (`IDpost`) REFERENCES `posts` (`IDpost`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `likedposts_ibfk_2` FOREIGN KEY (`IDuser`) REFERENCES `users` (`IDuser`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Ograniczenia dla tabeli `userposts`
 --
 ALTER TABLE `userposts`
-  ADD CONSTRAINT `userposts_ibfk_1` FOREIGN KEY (`IDpost`) REFERENCES `posts` (`id`),
-  ADD CONSTRAINT `userposts_ibfk_2` FOREIGN KEY (`IDuser`) REFERENCES `users` (`id`);
+  ADD CONSTRAINT `userposts_ibfk_1` FOREIGN KEY (`IDpost`) REFERENCES `posts` (`IDpost`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `userposts_ibfk_2` FOREIGN KEY (`IDuser`) REFERENCES `users` (`IDuser`) ON DELETE CASCADE ON UPDATE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
