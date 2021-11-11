@@ -2,6 +2,6 @@
 if(isset($_SESSION))
 {
 session_destroy();
-redirect('form');
+redirect('home');
 }
 ?>

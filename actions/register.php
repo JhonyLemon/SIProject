@@ -14,6 +14,10 @@ else if (isset($_POST['submit']))
     {
         $Error.= 'Password field cannot be empty'; 
     }
+    if (empty($_POST['email']))
+    { 
+        $Error.= 'Email field cannot be empty'; 
+    }
     if($Error=='')
     {
         $stmt = $db->prepare("SELECT id,login,password,age,permission FROM user WHERE login = :login");
