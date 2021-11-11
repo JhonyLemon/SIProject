@@ -1,8 +1,8 @@
             <div id="buttons">
                 <?php 
-                if (array_key_exists('user', $_SESSION))
+                if (array_key_exists('permission', $_SESSION))
                 {
-                    switch($_SESSION['perm'])
+                    switch($_SESSION['permission'])
                     {
                         case 'admin':
                             {

@@ -1,11 +1,11 @@
 <?php
+$Error= array();
 if (array_key_exists('user', $_SESSION)) 
 { 
     redirect('home');
 }
 else if (isset($_POST['submit']))
 {
-    $Error= array();
     if (empty($_POST['login']))
     {
         $Error['login']= 'Login field cannot be empty'; 
@@ -25,23 +25,20 @@ else if (isset($_POST['submit']))
             $db->beginTransaction();
             if (empty($_POST['birthday']))
             {
-                $stmt = $db->prepare('INSERT INTO users (IDuser,password,email) VALUES (:login,:password,:email)');
-                $stmt->bindValue(':login', $_POST['login'], PDO::PARAM_STR);
-                $stmt->bindValue(':password', sha1($_POST['password']), PDO::PARAM_STR);
-                $stmt->bindValue(':email', $_POST['email'], PDO::PARAM_STR);
+                $stmt = $db->prepare('INSERT INTO users (login,password,email) VALUES (:login,:password,:email)'); 
             }
             else
             {
-                $stmt = $db->prepare('INSERT INTO users (IDuser,password,email,birthday) VALUES (:login,:password,:email,:birthday)');
-                $stmt->bindValue(':login', $_POST['login'], PDO::PARAM_STR);
-                $stmt->bindValue(':password', sha1($_POST['password']), PDO::PARAM_STR);
-                $stmt->bindValue(':email', $_POST['email'], PDO::PARAM_STR);
+                $stmt = $db->prepare('INSERT INTO users (login,password,email,birthday) VALUES (:login,:password,:email,:birthday)');
                 $stmt->bindValue(':birthday', $_POST['birthday']);
             }
+            $stmt->bindValue(':login', $_POST['login'], PDO::PARAM_STR);
+            $stmt->bindValue(':password', password_hash($_POST['password'], PASSWORD_DEFAULT), PDO::PARAM_STR);
+            $stmt->bindValue(':email', $_POST['email'], PDO::PARAM_STR);
             $stmt->execute();
             $stmt->closeCursor();
             $db->commit();
-            redirect('home');
+           // redirect('home');
         }
         catch(PDOException $e)
         {

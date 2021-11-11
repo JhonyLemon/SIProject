@@ -16,14 +16,14 @@ else if (isset($_POST['submit']))
     }
     if(count($Error)==0)
     {
-        $stmt = $db->prepare('SELECT IDuser,login,birthday,permission FROM users WHERE login = :login AND password=:password');
+        $stmt = $db->prepare('SELECT IDuser,login,password,birthday,permission FROM users WHERE login = :login');
         $stmt->bindValue(':login', $_POST['login'], PDO::PARAM_STR);
-        $stmt->bindValue(':password', sha1($_POST['password']), PDO::PARAM_STR);
         $stmt->execute();
         $user = $stmt->fetch();
-        if ($user!=0)
+        //password_verify($password, $hashed_password)
+        if ($user!=0 && password_verify($_POST['password'], $user['password']))
         {
-            $_SESSION["id"]=$user['id'];
+            $_SESSION["id"]=$user['IDuser'];
             $_SESSION["login"]=$user['login'];
             $_SESSION["permission"]=$user['permission'];
             $_SESSION["birthday"]=$user['birthday'];

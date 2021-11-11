@@ -12,7 +12,7 @@ function testInput($data)
     return $data;
 }
 define('_ROOT_PATH', dirname(__FILE__));  
-$actions = array('home', 'register', 'login', 'lobby','post','settings','postval','users','random'); 
+$actions = array('home', 'register', 'login', 'lobby','post','settings','postval','users','random','logout'); 
 $action = 'home'; 
 
 try { 
