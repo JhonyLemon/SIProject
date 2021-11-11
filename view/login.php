@@ -18,11 +18,11 @@
                     <ul>
                         <li>
                             <label>Login</label>
-                            <input type='text' name='log'><br>
+                            <input type='text' name='login'><br>
                         </li>
                         <li>
                             <label>Password</label>
-                            <input type='password' name='pass'><br>
+                            <input type='password' name='password'><br>
                         </li>
                         <li>
                             <?php if (isset($Error)): ?> 

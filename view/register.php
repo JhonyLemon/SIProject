@@ -26,7 +26,7 @@
                         </li>
                         <li>
                             <label>Password</label>
-                            <input type='password' name='pass'><br>
+                            <input type='password' name='password'><br>
                         </li>
                         <li>
                             <label>Birthday</label>

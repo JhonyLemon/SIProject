@@ -5,33 +5,48 @@ if (array_key_exists('user', $_SESSION))
 }
 else if (isset($_POST['submit']))
 {
-    $Error='';
-    if (empty($_POST['log']))
+    $Error= array();
+    if (empty($_POST['login']))
     {
-        $Error.= 'Login field cannot be empty'; 
+        $Error['login']= 'Login field cannot be empty'; 
     }
-    if (empty($_POST['pass']))
+    if (empty($_POST['password']))
     {
-        $Error.= 'Password field cannot be empty'; 
+        $Error['password']= 'Password field cannot be empty'; 
     }
     if (empty($_POST['email']))
     { 
-        $Error.= 'Email field cannot be empty'; 
+        $Error['email']= 'Email field cannot be empty'; 
     }
-    if($Error=='')
+    if(count($Error)==0)
     {
-        $stmt = $db->prepare("SELECT id,login,password,age,permission FROM user WHERE login = :login");
-        $stmt->bindValue(':login', $_POST['log'], PDO::PARAM_STR);
-        $stmt->execute();
-        $user = $stmt->fetch();
-        if ($user && sha1($_POST['pass'])==$user['password'] && $user['age']==$_POST['age'])
-        {
-            $_SESSION["id"]=$user['id'];
-            $_SESSION["user"]=$user['login'];
-            $_SESSION["perm"]=$user['permission'];
+        try 
+        { 
+            $db->beginTransaction();
+            if (empty($_POST['birthday']))
+            {
+                $stmt = $db->prepare('INSERT INTO users (IDuser,password,email) VALUES (:login,:password,:email)');
+                $stmt->bindValue(':login', $_POST['login'], PDO::PARAM_STR);
+                $stmt->bindValue(':password', sha1($_POST['password']), PDO::PARAM_STR);
+                $stmt->bindValue(':email', $_POST['email'], PDO::PARAM_STR);
+            }
+            else
+            {
+                $stmt = $db->prepare('INSERT INTO users (IDuser,password,email,birthday) VALUES (:login,:password,:email,:birthday)');
+                $stmt->bindValue(':login', $_POST['login'], PDO::PARAM_STR);
+                $stmt->bindValue(':password', sha1($_POST['password']), PDO::PARAM_STR);
+                $stmt->bindValue(':email', $_POST['email'], PDO::PARAM_STR);
+                $stmt->bindValue(':birthday', $_POST['birthday']);
+            }
+            $stmt->execute();
+            $stmt->closeCursor();
+            $db->commit();
             redirect('home');
-        } else {
-            $Error= 'Podane dane są błędne'; 
+        }
+        catch(PDOException $e)
+        {
+            $db->rollBack();
+            $Error['action']='Operacja rejestracji nie powiodła się';
         }
     }
 }

@@ -5,29 +5,31 @@ if (array_key_exists('user', $_SESSION))
 }
 else if (isset($_POST['submit']))
 {
-    $Error='';
-    if (empty($_POST['log']))
+    $Error= array();
+    if (empty($_POST['login']))
     {
-        $Error.= 'Login field cannot be empty'; 
+        $Error['login']= 'Login field cannot be empty'; 
     }
-    if (empty($_POST['pass']))
+    if (empty($_POST['password']))
     {
-        $Error.= 'Password field cannot be empty'; 
+        $Error['password']= 'Login field cannot be empty'; 
     }
-    if($Error=='')
+    if(count($Error)==0)
     {
-        $stmt = $db->prepare("SELECT id,login,password,age,permission FROM user WHERE login = :login");
-        $stmt->bindValue(':login', $_POST['log'], PDO::PARAM_STR);
+        $stmt = $db->prepare('SELECT IDuser,login,birthday,permission FROM users WHERE login = :login AND password=:password');
+        $stmt->bindValue(':login', $_POST['login'], PDO::PARAM_STR);
+        $stmt->bindValue(':password', sha1($_POST['password']), PDO::PARAM_STR);
         $stmt->execute();
         $user = $stmt->fetch();
-        if ($user && sha1($_POST['pass'])==$user['password'] && $user['age']==$_POST['age'])
+        if ($user!=0)
         {
             $_SESSION["id"]=$user['id'];
-            $_SESSION["user"]=$user['login'];
-            $_SESSION["perm"]=$user['permission'];
+            $_SESSION["login"]=$user['login'];
+            $_SESSION["permission"]=$user['permission'];
+            $_SESSION["birthday"]=$user['birthday'];
             redirect('home');
         } else {
-            $Error= 'Podane dane są błędne'; 
+            $Error= 'Login or password is incorrect'; 
         }
     }
 }
