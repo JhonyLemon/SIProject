@@ -12,7 +12,7 @@
             <?php include(_ROOT_PATH.DIRECTORY_SEPARATOR.'view'.DIRECTORY_SEPARATOR.'header.php'); ?>      
         </header>
         <section>
-            <h1>Witaj <?php echo $_SESSION['user']; ?></h1>
+            
         </section>
         <footer>
             <?php include(_ROOT_PATH.DIRECTORY_SEPARATOR.'view'.DIRECTORY_SEPARATOR.'footer.php'); ?>

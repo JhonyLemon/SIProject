@@ -1,5 +1,9 @@
 <?php
 session_start();
+if(!array_key_exists('permission',$_SESSION))
+{
+    $_SESSION['permission']='visitor';
+}
 function redirect($url)
 {
     header("Location: index.php?action=$url",TRUE,301);
