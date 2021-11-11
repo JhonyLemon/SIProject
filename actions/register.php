@@ -10,13 +10,35 @@ else if (isset($_POST['submit']))
     {
         $Error['login']= 'Login field cannot be empty'; 
     }
-    if (empty($_POST['password']))
+    else
     {
-        $Error['password']= 'Password field cannot be empty'; 
+        $stmt = $db->prepare('SELECT login FROM users WHERE login = :login');
+        $stmt->bindValue(':login', $_POST['login'], PDO::PARAM_STR);
+        $stmt->execute();
+        $user = $stmt->fetch();
+        if ($user==0)
+            $Error['login']= 'Login is already used'; 
+        }
+    if (empty($_POST['password']) || empty($_POST['rpassword']))
+    {
+        $Error['password']= 'Passwords field cannot be empty'; 
+    }
+    else
+    {
+        if($_POST['password']!=$_POST['rpassword'])
+            $Error['password']= 'Passwords arent identical'; 
     }
     if (empty($_POST['email']))
     { 
         $Error['email']= 'Email field cannot be empty'; 
+    }
+    else
+    {
+    $_POST['email']=filter_var($_POST['email'], FILTER_SANITIZE_EMAIL);
+    if(!filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)) 
+    {
+        $Error['email']= 'Email is not correct'; 
+    }
     }
     if(count($Error)==0)
     {

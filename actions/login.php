@@ -20,7 +20,6 @@ else if (isset($_POST['submit']))
         $stmt->bindValue(':login', $_POST['login'], PDO::PARAM_STR);
         $stmt->execute();
         $user = $stmt->fetch();
-        //password_verify($password, $hashed_password)
         if ($user!=0 && password_verify($_POST['password'], $user['password']))
         {
             $_SESSION["id"]=$user['IDuser'];

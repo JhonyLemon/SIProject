@@ -31,6 +31,8 @@
                         <li>
                             <label>Password</label>
                             <input type='password' name='password'><br>
+                            <label>Repeat password</label>
+                            <input type='password' name='rpassword'><br>
                             <?php if (array_key_exists('password',$Error)): ?> 
                             <label class="error"><?php echo $Error['password'] ?></label><?php endif; ?>
                         </li>
