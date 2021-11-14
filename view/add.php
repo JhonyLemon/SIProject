@@ -5,6 +5,9 @@
 <meta charset="utf-8" /> 
 <meta name="description" content="Opis strony" /> 
 <meta name="keywords" content="Wyrazy kluczowe" /> 
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<script type="text/javascript" src="js/add.js"></script>
+
 <title>Tytuł strony</title> 
 </head> 
 <body> 
@@ -12,41 +15,40 @@
             <?php include(_ROOT_PATH.DIRECTORY_SEPARATOR.'view'.DIRECTORY_SEPARATOR.'header.php'); ?>      
         </header>
         <section>
-        <h1>Utwórz post</h1><br>
-        <?php
-        var_dump($_FILES['file']['name']);
-        ?>
-        <form action="index.php?action=add" method="POST" enctype="multipart/form-data" class="main">
-        <fieldset>
+            <h1>Utwórz post</h1><br>
+            <form method="post" id="form" name="form" enctype="multipart/form-data">
                     <ul>
                         <li>
                             <label>Title</label> 
-                            <input type="text" name="title" value=""><br>
+                            <input type="text" name="title" id="title" value=""><br>
                             <?php if (array_key_exists('title',$errors)): ?> 
                             <label class="error"><?php echo $errors['title'] ?></label><?php endif; ?>
                         </li>
-                        <li>
-                            <label>Description</label> 
-                            <textarea name="description" rows="4" cols="50"></textarea><br>
-                            <?php if (array_key_exists('descriptio',$errors)): ?> 
-                            <label class="error"><?php echo $errors['description'] ?></label><?php endif; ?>
-
+                        <li id="preview">
                         </li>
+                        
                         <li>
                             <label>Select file</label> 
-                            <input type="file" name="file" accept="image/jpeg"><br>
+                            <input type="file" id="file" name="file"><br>
                             <?php if (array_key_exists('file',$errors)): ?> 
                             <label class="error"><?php echo $errors['file'] ?></label><?php endif; ?>
                         </li>
                         <li>
-                            <input type="submit" value="Dodaj" name='submit'>
+                            <label>Description</label> 
+                            <textarea name="description" id="description" rows="4" cols="50" value=''></textarea><br>
+                            <?php if (array_key_exists('description',$errors)): ?> 
+                            <label class="error"><?php echo $errors['description'] ?></label><?php endif; ?>
+
+                        </li>
+                        <li>
+                            <input id="make" type="submit" value="Stwórz" name='make'>
                         </li>
                     </ul>
-                </fieldset>
-
-
-             
-        </form>
+            </form>
+            <form style="display:none" method="post" id="hidden" name="form" enctype="multipart/form-data">
+                <input type="text" name="title" id="hiddentitle" value="" disabled=true;>
+                
+            </form>
         </section>
         <footer>
             <?php include(_ROOT_PATH.DIRECTORY_SEPARATOR.'view'.DIRECTORY_SEPARATOR.'footer.php'); ?>
