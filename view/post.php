@@ -12,7 +12,31 @@
             <?php include(_ROOT_PATH.DIRECTORY_SEPARATOR.'view'.DIRECTORY_SEPARATOR.'header.php'); ?>      
         </header>
         <section>
-
+        <div class="list">
+                <?php
+                if(isset($_GET['id']))
+                {
+                    
+                    if($post=$stmt->fetch())
+                    {
+                        echo '<h1>'.$post['title'].'</h1>';
+                        do
+                        {
+                            // var_dump(_PHOTO_PATH.DIRECTORY_SEPARATOR.$posts['IDphoto'].'.'.$posts['ext']);
+                            echo "
+                            <div class='element'>
+                            <img src=\""._PHOTO_PATH.DIRECTORY_SEPARATOR.$post['IDphoto'].'.'.$post['ext']."\" alt=\"".$post['IDpost']."\"/>
+                             <figcaption>{$post['description']}</figcaption>
+                             </div>";
+                        }while($post=$stmt->fetch());
+                    }
+                }
+                else
+                {
+                    redirect('pageNotFound');
+                }
+                ?>
+            </div>
         </section>
         <footer>
             <?php include(_ROOT_PATH.DIRECTORY_SEPARATOR.'view'.DIRECTORY_SEPARATOR.'footer.php'); ?>

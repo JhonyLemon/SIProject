@@ -15,14 +15,16 @@
             <?php include(_ROOT_PATH.DIRECTORY_SEPARATOR.'view'.DIRECTORY_SEPARATOR.'header.php'); ?>      
         </header>
         <section>
+            <?php if(isset($Error))
+                    echo $Error;
+            ?>
             <h1>Utwórz post</h1><br>
             <form method="post" id="form" name="form" enctype="multipart/form-data">
                     <ul>
                         <li>
                             <label>Title</label> 
                             <input type="text" name="title" id="title" value=""><br>
-                            <?php if (array_key_exists('title',$errors)): ?> 
-                            <label class="error"><?php echo $errors['title'] ?></label><?php endif; ?>
+                            <label class="error"></label>
                         </li>
                         <li id="preview">
                         </li>
@@ -30,14 +32,12 @@
                         <li>
                             <label>Select file</label> 
                             <input type="file" id="file" name="file"><br>
-                            <?php if (array_key_exists('file',$errors)): ?> 
-                            <label class="error"><?php echo $errors['file'] ?></label><?php endif; ?>
+                            <label class="error"></label>
                         </li>
                         <li>
                             <label>Description</label> 
                             <textarea name="description" id="description" rows="4" cols="50" value=''></textarea><br>
-                            <?php if (array_key_exists('description',$errors)): ?> 
-                            <label class="error"><?php echo $errors['description'] ?></label><?php endif; ?>
+                            <label class="error"></label>
 
                         </li>
                         <li>

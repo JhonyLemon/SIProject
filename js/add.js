@@ -93,7 +93,7 @@ function onChange()
   var input = document.getElementById('file');
   var description = document.getElementById('description'); 
   size = size+input.size;
-  if(input!=null && max_size>size)
+  if(input!=null && (max_size>size || input.size!=0))
   {
     var parentNode = document.getElementById("preview");
     if(isVideo(input.files[0].type))

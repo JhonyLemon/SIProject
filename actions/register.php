@@ -16,7 +16,7 @@ else if (isset($_POST['submit']))
         $stmt->bindValue(':login', $_POST['login'], PDO::PARAM_STR);
         $stmt->execute();
         $user = $stmt->fetch();
-        if ($user==0)
+        if ($user!=0)
             $Error['login']= 'Login is already used'; 
         }
     if (empty($_POST['password']) || empty($_POST['rpassword']))

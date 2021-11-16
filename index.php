@@ -1,6 +1,9 @@
 <?php
 session_start();
 
+define('_ROOT_PATH', dirname(__FILE__)); 
+define('_PHOTO_PATH', 'posts'); 
+
 function redirect($url)
 {
     header("Location: index.php?action=$url",TRUE,301);
@@ -11,8 +14,8 @@ function testInput($data)
     $data = htmlspecialchars($data);   
     return $data;
 }
-define('_ROOT_PATH', dirname(__FILE__));  
-$actions = array('home', 'register', 'login', 'lobby','post','settings','postval','users','random','logout','add'); 
+ 
+$actions = array('home', 'register', 'login', 'lobby','post','settings','postval','users','random','logout','add','pageNotFound'); 
 $action = 'home'; 
 
 try { 

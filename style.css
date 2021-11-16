@@ -122,25 +122,6 @@ h2{
     margin: 0px;
     max-width: 800px;
 }
-table, th, td {
-    border: 1px solid black;
-  }
-table{
-    position: relative;
-    left: 100px;
-    border-collapse: collapse;
-    width: 60%;
-    text-align: center;
-  }
-  th{
-    color: white;
-    background-color: #3e6ead;
-    height: 40px;
-  }
-  td{
-      height: 40px;
-  }
-
 
  .alert {
     padding: 20px;
@@ -165,3 +146,22 @@ table{
     transition: 0.3s;
   } 
   
+  .tiles {
+    height: auto; 
+    min-height: 70%;
+    display: flex; 
+    justify-content: left;
+    max-width: 80%;
+}
+.tile{
+    width: auto;
+    height: auto;
+    max-height: 400px;
+    max-width: 400px;
+    background-color: black;
+    cursor: pointer;
+}
+.tile>img{
+    width: 200px;
+    height: 400px;
+}
