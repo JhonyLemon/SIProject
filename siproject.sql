@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Czas generowania: 11 Lis 2021, 15:51
+-- Czas generowania: 18 Lis 2021, 11:37
 -- Wersja serwera: 10.4.21-MariaDB
 -- Wersja PHP: 8.0.11
 
@@ -103,17 +103,45 @@ DELIMITER ;
 -- --------------------------------------------------------
 
 --
+-- Struktura tabeli dla tabeli `photos`
+--
+
+CREATE TABLE `photos` (
+  `IDpost` int(11) UNSIGNED NOT NULL,
+  `IDphoto` int(11) UNSIGNED NOT NULL,
+  `ext` varchar(3) NOT NULL,
+  `description` text NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Zrzut danych tabeli `photos`
+--
+
+INSERT INTO `photos` (`IDpost`, `IDphoto`, `ext`, `description`) VALUES
+(1, 1, 'png', 'fdsa'),
+(1, 2, 'png', ''),
+(2, 3, 'png', 'Fajno');
+
+-- --------------------------------------------------------
+
+--
 -- Struktura tabeli dla tabeli `posts`
 --
 
 CREATE TABLE `posts` (
   `IDpost` int(11) UNSIGNED NOT NULL,
-  `tittle` text NOT NULL,
-  `description` text NOT NULL,
-  `file` text NOT NULL,
+  `title` text NOT NULL,
   `points` int(11) NOT NULL DEFAULT 0,
   `valid` tinyint(1) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Zrzut danych tabeli `posts`
+--
+
+INSERT INTO `posts` (`IDpost`, `title`, `points`, `valid`) VALUES
+(1, 'fdsa', 0, 0),
+(2, 'Drugi post', 0, 0);
 
 -- --------------------------------------------------------
 
@@ -136,11 +164,20 @@ CREATE TABLE `users` (
   `IDuser` int(10) UNSIGNED NOT NULL,
   `login` varchar(20) NOT NULL,
   `email` varchar(40) NOT NULL,
-  `password` varchar(64) NOT NULL,
+  `password` varchar(100) NOT NULL,
   `permission` enum('admin','moderator','user','') NOT NULL DEFAULT 'user',
   `birthday` date DEFAULT NULL,
   `points` int(11) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Zrzut danych tabeli `users`
+--
+
+INSERT INTO `users` (`IDuser`, `login`, `email`, `password`, `permission`, `birthday`, `points`) VALUES
+(1, 'adam', 'adamnosol@gmail.com', '$2y$10$ZjzWwpc30STeWbPRxMNmied/O1XisDhFgt0L5FE/FMFGNLYRkBskG', 'admin', NULL, 0),
+(2, 'kamil', 'kamil@wp.pl', '$2y$10$X2IQhv79RYrnVNvyRv/sH.wDvj.0QuSWnLxJxThJ7u6b1Udx9N7BK', 'user', NULL, 0),
+(3, 'kacper', 'kamil@wp.pl', '$2y$10$UNF2LDzazIQTLC1rwnXUaeulQzE.F1dOzcLR7r7RXNqY7RF5ezlzi', 'user', NULL, 0);
 
 --
 -- Indeksy dla zrzutów tabel
@@ -167,6 +204,13 @@ ALTER TABLE `likedcomments`
 ALTER TABLE `likedposts`
   ADD KEY `likedposts_ibfk_1` (`IDpost`),
   ADD KEY `likedposts_ibfk_2` (`IDuser`);
+
+--
+-- Indeksy dla tabeli `photos`
+--
+ALTER TABLE `photos`
+  ADD PRIMARY KEY (`IDphoto`),
+  ADD KEY `IDpost` (`IDpost`);
 
 --
 -- Indeksy dla tabeli `posts`
@@ -198,16 +242,22 @@ ALTER TABLE `comments`
   MODIFY `IDcomment` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
+-- AUTO_INCREMENT dla tabeli `photos`
+--
+ALTER TABLE `photos`
+  MODIFY `IDphoto` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
 -- AUTO_INCREMENT dla tabeli `posts`
 --
 ALTER TABLE `posts`
-  MODIFY `IDpost` int(11) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `IDpost` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT dla tabeli `users`
 --
 ALTER TABLE `users`
-  MODIFY `IDuser` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `IDuser` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- Ograniczenia dla zrzutów tabel
@@ -233,6 +283,12 @@ ALTER TABLE `likedcomments`
 ALTER TABLE `likedposts`
   ADD CONSTRAINT `likedposts_ibfk_1` FOREIGN KEY (`IDpost`) REFERENCES `posts` (`IDpost`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `likedposts_ibfk_2` FOREIGN KEY (`IDuser`) REFERENCES `users` (`IDuser`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Ograniczenia dla tabeli `photos`
+--
+ALTER TABLE `photos`
+  ADD CONSTRAINT `photos_ibfk_1` FOREIGN KEY (`IDpost`) REFERENCES `posts` (`IDpost`);
 
 --
 -- Ograniczenia dla tabeli `userposts`
