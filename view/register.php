@@ -12,7 +12,7 @@
             <?php include(_ROOT_PATH.DIRECTORY_SEPARATOR.'view'.DIRECTORY_SEPARATOR.'header.php'); ?>                
         </header>
         <section>
-            <h1>Register</h1> 
+            <h1>Rejestracja</h1> 
             <form action="index.php?action=register" method="POST" class="main">
                 <fieldset>
                     <ul>
@@ -44,10 +44,11 @@
                             <?php if (array_key_exists('action',$Error)): ?> 
                             <label class="error"><?php echo $Error['action'] ?></label><?php endif; ?>
                         </li>
-                        <li>
-                            <input type='submit' value='Register' name='submit'>
-                        </li>
                     </ul>
+                    <input type='submit' value='Register' name='submit'>
+                    <?php if (array_key_exists('ok',$info)): ?> 
+                    <label class="ok"><?php echo $info['ok'] ?></label><?php endif; ?>
+                           
                 </fieldset>
             </form>        
         </section>

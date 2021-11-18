@@ -25,8 +25,8 @@
                             // var_dump(_PHOTO_PATH.DIRECTORY_SEPARATOR.$posts['IDphoto'].'.'.$posts['ext']);
                             echo "
                             <div class='element'>
-                            <img src=\""._PHOTO_PATH.DIRECTORY_SEPARATOR.$post['IDphoto'].'.'.$post['ext']."\" alt=\"".$post['IDpost']."\"/>
-                             <figcaption>{$post['description']}</figcaption>
+                            <img class='img' src=\""._PHOTO_PATH.DIRECTORY_SEPARATOR.$post['IDphoto'].'.'.$post['ext']."\" alt=\"".$post['IDpost']."\"/>
+                             <figcaption class='figpost'>{$post['description']}</figcaption>
                              </div>";
                         }while($post=$stmt->fetch());
                     }

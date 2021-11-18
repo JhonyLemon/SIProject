@@ -1,5 +1,7 @@
 <?php
 $Error= array();
+$info= array();
+
 if (array_key_exists('user', $_SESSION)) 
 { 
     redirect('home');
@@ -66,6 +68,10 @@ else if (isset($_POST['submit']))
         {
             $db->rollBack();
             $Error['action']='Operacja rejestracji nie powiodła się';
+        }
+        if(count($Error)==0)
+        {
+            $info['ok']="Pomyślnie zarejestrowano :)";
         }
     }
 }

@@ -1,1 +1,1 @@
-<p>© Footer</p>
+<p>© ELEKTRON</p>
