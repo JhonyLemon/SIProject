@@ -16,20 +16,10 @@ function isImage(filename)
   switch (ext.toLowerCase()) 
   {
     case 'jpg':
+    case 'jpeg':
     case 'gif':
     case 'bmp':
     case 'png':
-      return true;
-  }
-  return false;
-}
-
-function isVideo(filename) 
-{
-  var ext = getExtension(filename);
-  switch (ext.toLowerCase()) 
-  {
-    case 'webm':
       return true;
   }
   return false;
@@ -60,18 +50,6 @@ function addImage(parentNode,element,input)
   parentNode.appendChild(element);
   parentNode.appendChild(document.createElement("br"));
 }
-function addVideo(parentNode,element,input)
-{
-  addFile(input,parentNode);
-  var video = document.createElement("video");
-  video.setAttribute("controls", "controls");
-  video.setAttribute("width", "320");
-  video.setAttribute("height", "240");
-  element.src=URL.createObjectURL(input.files[0]);
-  video.appendChild(element);
-  parentNode.appendChild(video);
-  parentNode.appendChild(document.createElement("br"));
-}
 function revokeObject(element)
 {
   element.onload = function() 
@@ -96,15 +74,7 @@ function onChange()
   if(input!=null && (max_size>size || input.size!=0))
   {
     var parentNode = document.getElementById("preview");
-    if(isVideo(input.files[0].type))
-    {
-      var element =document.createElement("source");
-      addVideo(parentNode,element,input);
-      addTextarea(parentNode,description.value);
-      description.value=null;
-      revokeObject(element);
-    }
-    else if(isImage(input.files[0].type))
+    if(isImage(input.files[0].type))
     {
       var element = document.createElement("img");
       addImage(parentNode,element,input);
@@ -147,15 +117,15 @@ function onSubmit(event)
 
   var description=document.getElementsByName("descriptions[]");
 
-  for(i=0; i<desc.length-1; i++)
+  for(i=0; i<desc.length; i++)
     description[i].value=desc[i].value;
 
-  for(i=0; i<elements.length-1; i++)
+  for(i=0; i<elements.length; i++)
     elements[i].disabled=false;
 
   data = new FormData(document.getElementById("hidden"));
 
-  for(i=0; i<elements.length-1; i++)
+  for(i=0; i<elements.length; i++)
     elements[i].disabled=true;
 
   $.ajax({

@@ -46,7 +46,7 @@
                     </ul>
             </form>
             <form style="display:none" method="post" id="hidden" name="form" enctype="multipart/form-data">
-                <input type="text" name="title" id="hiddentitle" value="" disabled=true;>
+                <input type="text" name="title" id="hiddentitle" value="" disabled=true>
                 
             </form>
         </section>

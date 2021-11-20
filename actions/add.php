@@ -9,6 +9,7 @@ if(array_key_exists('title',$_POST))
             try 
             { 
                 $db->beginTransaction();
+
                     $stmt = $db->prepare('INSERT INTO posts (title) VALUES (:title)');
                     $stmt->bindValue(':title', $_POST['title']);
                     $stmt->execute();
@@ -36,6 +37,11 @@ if(array_key_exists('title',$_POST))
                             throw new Exception;
                         }
                     }
+                    $stmt = $db->prepare('INSERT INTO userposts (IDuser,IDpost) VALUES (:IDuser,:IDpost)');
+                    $stmt->bindValue(':IDuser', $_SESSION["id"]);
+                    $stmt->bindValue(':IDpost', $id);
+                    $stmt->execute();
+                    $stmt->closeCursor();
                 $db->commit();
                 unset($_POST);
                 $ok='Everything is okay';
