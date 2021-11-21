@@ -1,3 +1,4 @@
+var id='';
 
 function onClick(event)
 {
@@ -6,7 +7,10 @@ function onClick(event)
   var element=document.getElementById("hiddenaction");
 
   element.disabled=false;
+  if(id=='')
   element.value=event.target.id;
+  else
+  element.value=id;
 
   data = new FormData(document.getElementById('hiddenactionform'));
 
@@ -24,4 +28,30 @@ function onClick(event)
         $("html").html(data);
     }
 });
+id='';
+}
+
+function onClickModal(event)
+{
+  id=event.target.id;
+  var element = document.createElement("p");
+  var node = document.createTextNode('Are you sure you want to '+id+' post');
+  element.id='temp';
+  element.appendChild(node);
+  document.getElementById('actionModalContent').appendChild(element);
+  document.getElementById('actionModal').style.display = "block";
+  
+}
+function onClickX() 
+{
+  document.getElementById('actionModal').style.display = "none";
+  document.getElementById('temp').remove();
+}
+
+window.onclick = function(event) 
+{
+  if (event.target == document.getElementById('actionModal')) {
+    document.getElementById('actionModal').style.display = "none";
+    document.getElementById('temp').remove();
+  }
 }

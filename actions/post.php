@@ -1,59 +1,149 @@
 <?php
-
-if(array_key_exists('type',$_POST))
+$do='';
+if(array_key_exists('type',$_POST) && isset($_SESSION['id']))
 {
     $temp=explode('.',$_POST['type']);
-    if($temp['1']=='ON')
+    var_dump($temp);
+    if(array_key_exists('1',$temp))
     {
-        if($temp['0']=='upvote')
+        
+        if($temp['1']=='ON')
         {
-            try 
-            { 
-                $db->beginTransaction();
-                    $stmt = $db->prepare('INSERT INTO likedposts (IDuser,IDpost,vote) VALUES (:iduser,:idpost,1)');
-                    $stmt->bindValue(':iduser', $_SESSION['id']);
-                    $stmt->bindValue(':idpost', $_GET['id']);
-                    //$stmt->bindValue(':vote', 1);
-                    $stmt->execute();
-                    $stmt->closeCursor();
-                $db->commit();
-                unset($_POST);
-            }
-            catch(Exception $e)
+            if($temp['0']=='upvote')
             {
-                $db->rollBack();
-                $Error='Unexpected error occured: '.$e;
-            }    
+                try 
+                { 
+                    $db->beginTransaction();
+                        $stmt = $db->prepare('INSERT INTO likedposts (IDuser,IDpost,vote) VALUES (:iduser,:idpost,1)');
+                        $stmt->bindValue(':iduser', $_SESSION['id']);
+                        $stmt->bindValue(':idpost', $_GET['id']);
+                        //$stmt->bindValue(':vote', 1);
+                        $stmt->execute();
+                        $stmt->closeCursor();
+                    $db->commit();
+                    unset($_POST);
+                }
+                catch(Exception $e)
+                {
+                    $db->rollBack();
+                    $Error='Unexpected error occured: '.$e;
+                }    
+            }
+            else if($temp['0']=='downvote')
+            {
+                try 
+                { 
+                    $db->beginTransaction();
+    
+                        $stmt = $db->prepare('INSERT INTO likedposts (IDuser,IDpost,vote) VALUES (:iduser,:idpost,0)');
+                        $stmt->bindValue(':iduser', $_SESSION['id']);
+                        $stmt->bindValue(':idpost', $_GET['id']);
+                       // $stmt->bindValue(':vote', 0);
+                        $stmt->execute();
+                        $stmt->closeCursor();
+                    $db->commit();
+                    unset($_POST);
+                }
+                catch(Exception $e)
+                {
+                    $db->rollBack();
+                    $Error='Unexpected error occured: '.$e;
+                } 
+            }
+            else if($temp['0']=='favorite')
+            {
+                try 
+                { 
+                    $db->beginTransaction();
+    
+                        $stmt = $db->prepare('INSERT INTO favoritedposts (IDuser,IDpost) VALUES (:iduser,:idpost)');
+                        $stmt->bindValue(':iduser', $_SESSION['id']);
+                        $stmt->bindValue(':idpost', $_GET['id']);
+                        $stmt->execute();
+                        $stmt->closeCursor();
+                    $db->commit();
+                    unset($_POST);
+                }
+                catch(Expection $e)
+                {
+                    $db->rollBack();
+                    $Error='Unexpected error occured';
+                } 
+            }
         }
-        else if($temp['0']=='downvote')
+        else if($temp['1']=='OFF')
+        {
+            if($temp['0']=='favorite')
+            {
+                try 
+                { 
+                    $db->beginTransaction();
+    
+                        $stmt = $db->prepare('DELETE FROM favoritedposts WHERE IDuser=:iduser && IDpost=:idpost');
+                        $stmt->bindValue(':iduser', $_SESSION['id']);
+                        $stmt->bindValue(':idpost', $_GET['id']);
+                        $stmt->execute();
+                        $stmt->closeCursor();
+                    $db->commit();
+                    unset($_POST);
+                }
+                catch(Expection $e)
+                {
+                    $db->rollBack();
+                    $Error='Unexpected error occured';
+                }
+            }
+            else
+            {
+                try 
+                { 
+                    $db->beginTransaction();
+    
+                        $stmt = $db->prepare('DELETE FROM likedposts WHERE IDuser=:iduser && IDpost=:idpost');
+                        $stmt->bindValue(':iduser', $_SESSION['id']);
+                        $stmt->bindValue(':idpost', $_GET['id']);
+                        $stmt->execute();
+                        $stmt->closeCursor();
+                    $db->commit();
+                    unset($_POST);
+                }
+                catch(Expection $e)
+                {
+                    $db->rollBack();
+                    $Error='Unexpected error occured';
+                } 
+            }
+        }
+    }
+    else
+    {
+        if($temp['0']=='validate')
         {
             try 
             { 
                 $db->beginTransaction();
-
-                    $stmt = $db->prepare('INSERT INTO likedposts (IDuser,IDpost,vote) VALUES (:iduser,:idpost,0)');
-                    $stmt->bindValue(':iduser', $_SESSION['id']);
+                    $stmt = $db->prepare('UPDATE posts SET valid=1 WHERE IDpost=:idpost && valid=:valid');
+                    $stmt->bindValue(':valid', $_GET['valid']);
                     $stmt->bindValue(':idpost', $_GET['id']);
-                   // $stmt->bindValue(':vote', 0);
                     $stmt->execute();
                     $stmt->closeCursor();
                 $db->commit();
                 unset($_POST);
             }
-            catch(Exception $e)
+            catch(Expection $e)
             {
-                $db->rollBack();
-                $Error='Unexpected error occured: '.$e;
+                $db->rollBack(); 
+                $Error='Unexpected error occured';
             } 
+            
         }
-        else if($temp['0']=='favorite')
+        else if($temp['0']=='delete')
         {
             try 
             { 
                 $db->beginTransaction();
-
-                    $stmt = $db->prepare('INSERT INTO favoritedposts (IDuser,IDpost) VALUES (:iduser,:idpost)');
-                    $stmt->bindValue(':iduser', $_SESSION['id']);
+                    $stmt = $db->prepare('DELETE FROM posts WHERE IDpost=:idpost && valid=:valid');
+                    $stmt->bindValue(':valid', $_GET['valid']);
                     $stmt->bindValue(':idpost', $_GET['id']);
                     $stmt->execute();
                     $stmt->closeCursor();
@@ -67,49 +157,7 @@ if(array_key_exists('type',$_POST))
             } 
         }
     }
-    else if($temp['1']=='OFF')
-    {
-        if($temp['0']=='favorite')
-        {
-            try 
-            { 
-                $db->beginTransaction();
 
-                    $stmt = $db->prepare('DELETE FROM favoritedposts WHERE IDuser=:iduser && IDpost=:idpost');
-                    $stmt->bindValue(':iduser', $_SESSION['id']);
-                    $stmt->bindValue(':idpost', $_GET['id']);
-                    $stmt->execute();
-                    $stmt->closeCursor();
-                $db->commit();
-                unset($_POST);
-            }
-            catch(Expection $e)
-            {
-                $db->rollBack();
-                $Error='Unexpected error occured';
-            }
-        }
-        else
-        {
-            try 
-            { 
-                $db->beginTransaction();
-
-                    $stmt = $db->prepare('DELETE FROM likedposts WHERE IDuser=:iduser && IDpost=:idpost');
-                    $stmt->bindValue(':iduser', $_SESSION['id']);
-                    $stmt->bindValue(':idpost', $_GET['id']);
-                    $stmt->execute();
-                    $stmt->closeCursor();
-                $db->commit();
-                unset($_POST);
-            }
-            catch(Expection $e)
-            {
-                $db->rollBack();
-                $Error='Unexpected error occured';
-            } 
-        }
-    }
 }
 
 
@@ -121,6 +169,13 @@ if(isset($_GET['id']))
     $stmt->execute();
     $points=$stmt->fetch();
 
+    $stmt = $db->prepare('SELECT valid FROM posts WHERE IDpost=:id && valid=0');
+    $stmt->bindValue(':id', $_GET['id']);
+    $stmt->execute();
+    $valid=$stmt->fetch();
+
+    if(isset($_SESSION['id']))
+    {
     $stmt = $db->prepare('SELECT vote FROM likedposts WHERE IDuser=:iduser && IDpost=:idpost');
     $stmt->bindValue(':iduser', $_SESSION['id']);
     $stmt->bindValue(':idpost', $_GET['id']);
@@ -132,8 +187,10 @@ if(isset($_GET['id']))
     $stmt->bindValue(':idpost', $_GET['id']);
     $stmt->execute();
     $favorite=$stmt->fetch();
+    }
 
-    $stmt = $db->prepare('SELECT posts.IDpost,title,IDphoto,ext,description,points FROM posts LEFT JOIN photos ON posts.IDpost=photos.IDpost WHERE posts.IDpost=:id');
+    $stmt = $db->prepare('SELECT posts.IDpost,title,IDphoto,ext,description,points FROM posts LEFT JOIN photos ON posts.IDpost=photos.IDpost WHERE posts.IDpost=:id && valid=:valid');
+    $stmt->bindValue(':valid', $_GET['valid']);
     $stmt->bindValue(':id', $_GET['id']);
     $stmt->execute();
 

@@ -39,6 +39,10 @@
                         }while($post=$stmt->fetch());
 
                     }
+                    else
+                    {
+                        redirect('home');
+                    }
                 }
                 else
                 {
@@ -51,36 +55,66 @@
                 <input type="text" name="type" id="hiddenaction" value="" disabled=true>
             </form>
                 <?php
-                if($vote)
+                if(isset($vote))
                 {
-                    if($vote['vote'])
+                    if($vote)
                     {
-                        echo "<input type='image' width='30' height='30' class='icons' onclick='onClick(event)' id='upvote.OFF' src=\"".'icons'.DIRECTORY_SEPARATOR.'UpVoteON.png'."\"/>";
-                        echo $points['0'];
-                        echo "<input type='image' width='30' height='30' class='icons' onclick='onClick(event)' id='downvote.ON' src=\"".'icons'.DIRECTORY_SEPARATOR.'DownVoteOFF.png'."\"/>";
-                    }
+                        if($vote['vote'])
+                        {
+                            echo "<input type='image' width='30' height='30' class='icons' onclick='onClick(event)' id='upvote.OFF' src=\"".'icons'.DIRECTORY_SEPARATOR.'UpVoteON.png'."\"/>";
+                            echo $points['0'];
+                            echo "<input type='image' width='30' height='30' class='icons' onclick='onClick(event)' id='downvote.ON' src=\"".'icons'.DIRECTORY_SEPARATOR.'DownVoteOFF.png'."\"/>";
+                        }
+                        else
+                        {
+                            echo "<input type='image' width='30' height='30' class='icons' onclick='onClick(event)' id='upvote.ON' src=\"".'icons'.DIRECTORY_SEPARATOR.'UpVoteOFF.png'."\"/>";
+                            echo $points['0'];
+                            echo "<input type='image' width='30' height='30' class='icons' onclick='onClick(event)' id='downvote.OFF' src=\"".'icons'.DIRECTORY_SEPARATOR.'DownVoteON.png'."\"/>";
+                
+                        }
+
+                    } 
                     else
                     {
                         echo "<input type='image' width='30' height='30' class='icons' onclick='onClick(event)' id='upvote.ON' src=\"".'icons'.DIRECTORY_SEPARATOR.'UpVoteOFF.png'."\"/>";
                         echo $points['0'];
-                        echo "<input type='image' width='30' height='30' class='icons' onclick='onClick(event)' id='downvote.OFF' src=\"".'icons'.DIRECTORY_SEPARATOR.'DownVoteON.png'."\"/>";
-                
+                        echo "<input type='image' width='30' height='30' class='icons' onclick='onClick(event)' id='downvote.ON' src=\"".'icons'.DIRECTORY_SEPARATOR.'DownVoteOFF.png'."\"/>";
                     }
-
                 }
                 else
                 {
-                    echo "<input type='image' width='30' height='30' class='icons' onclick='onClick(event)' id='upvote.ON' src=\"".'icons'.DIRECTORY_SEPARATOR.'UpVoteOFF.png'."\"/>";
+                    echo "<input type='image' width='30' height='30' class='icons' id='upvote.ON' src=\"".'icons'.DIRECTORY_SEPARATOR.'UpVoteOFF.png'."\"/>";
                     echo $points['0'];
-                    echo "<input type='image' width='30' height='30' class='icons' onclick='onClick(event)' id='downvote.ON' src=\"".'icons'.DIRECTORY_SEPARATOR.'DownVoteOFF.png'."\"/>";
+                    echo "<input type='image' width='30' height='30' class='icons' id='downvote.ON' src=\"".'icons'.DIRECTORY_SEPARATOR.'DownVoteOFF.png'."\"/>";
+                
                 }
-                if($favorite)
+                if(isset($favorite))
                 {
-                    echo "<input type='image' width='30' height='30' class='icons' onclick='onClick(event)' id='favorite.OFF' src=\"".'icons'.DIRECTORY_SEPARATOR.'FavoriteON.png'."\"/>";
-                }
+                    if($favorite)
+                    {
+                        echo "<input type='image' width='30' height='30' class='icons' onclick='onClick(event)' id='favorite.OFF' src=\"".'icons'.DIRECTORY_SEPARATOR.'FavoriteON.png'."\"/>";
+                    }
+                    else
+                    {
+                        echo "<input type='image' width='30' height='30' class='icons' onclick='onClick(event)' id='favorite.ON' src=\"".'icons'.DIRECTORY_SEPARATOR.'FavoriteOFF.png'."\"/>";
+                    }
+                } 
                 else
                 {
-                    echo "<input type='image' width='30' height='30' class='icons' onclick='onClick(event)' id='favorite.ON' src=\"".'icons'.DIRECTORY_SEPARATOR.'FavoriteOFF.png'."\"/>";
+                    echo "<input type='image' width='30' height='30' class='icons' id='favorite.ON' src=\"".'icons'.DIRECTORY_SEPARATOR.'FavoriteOFF.png'."\"/>";
+                }
+                if(array_key_exists('permission',$_SESSION) && ($_SESSION['permission']=='admin' || $_SESSION['permission']=='moderator'))
+                {
+                    if($valid)
+                    echo "<input type='image' width='30' height='30' class='icons' onclick='onClickModal(event)' id='validate' src=\"".'icons'.DIRECTORY_SEPARATOR.'Valid.png'."\"/>";
+                    echo "<input type='image' width='30' height='30' class='icons' onclick='onClickModal(event)' id='delete' src=\"".'icons'.DIRECTORY_SEPARATOR.'Delete.png'."\"/>";
+                    echo "<div id='actionModal' class='modal'>
+                            <div id='actionModalContent' class='modal-content'>
+                                <span onclick='onClickX(event)' class='close'>&times;</span>
+                                <button onclick='onClick(event)' id='Yes'>Yes</button>
+                                <button onclick='onClickX(event)' id='No'>No</button>
+                            </div>
+                          </div>";
                 }
 ?>
                 
