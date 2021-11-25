@@ -10,7 +10,7 @@ else if (isset($_POST['submit']))
 {
     if (empty($_POST['login']))
     {
-        $Error['login']= 'Login field cannot be empty'; 
+        $Error['login']= 'Login jest wymagany'; 
     }
     else
     {
@@ -19,27 +19,27 @@ else if (isset($_POST['submit']))
         $stmt->execute();
         $user = $stmt->fetch();
         if ($user!=0)
-            $Error['login']= 'Login is already used'; 
+            $Error['login']= 'Login jest już używany'; 
         }
     if (empty($_POST['password']) || empty($_POST['rpassword']))
     {
-        $Error['password']= 'Passwords field cannot be empty'; 
+        $Error['password']= 'Hasło jest wymagane'; 
     }
     else
     {
         if($_POST['password']!=$_POST['rpassword'])
-            $Error['password']= 'Passwords arent identical'; 
+            $Error['password']= 'Hasła nie są identyczne'; 
     }
     if (empty($_POST['email']))
     { 
-        $Error['email']= 'Email field cannot be empty'; 
+        $Error['email']= 'Email jest wymagany'; 
     }
     else
     {
     $_POST['email']=filter_var($_POST['email'], FILTER_SANITIZE_EMAIL);
     if(!filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)) 
     {
-        $Error['email']= 'Email is not correct'; 
+        $Error['email']= 'Email jest nieprawidłowy'; 
     }
     }
     if(count($Error)==0)

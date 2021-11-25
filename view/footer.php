@@ -1,1 +1,3 @@
-<p>© ELEKTRON</p>
+<footer>
+    <p>© ELEKTRON</p>
+</footer>

@@ -9,9 +9,6 @@
 <title>Tytuł strony</title> 
 </head> 
 <body> 
-        <header>
-            <?php include(_ROOT_PATH.DIRECTORY_SEPARATOR.'view'.DIRECTORY_SEPARATOR.'header.php'); ?>      
-        </header>
         <section>
             <div class="tiles">
                 <?php
@@ -21,14 +18,11 @@
                         echo "
                         <div onclick='onClick(event)' class='tile'>
                         <img src=\""._PHOTO_PATH.DIRECTORY_SEPARATOR.$posts['IDphoto'].'.'.$posts['ext']."\" alt=\"".$posts['IDpost']."\"/>
-                        <figcaption>{$posts['title']}</figcaption>
+                        <figcaption class='figlobby'>{$posts['title']}</figcaption>
                         </div>";
                     }
                 ?>
             </div>
         </section>
-        <footer>
-            <?php include(_ROOT_PATH.DIRECTORY_SEPARATOR.'view'.DIRECTORY_SEPARATOR.'footer.php'); ?>
-        </footer>
 </body> 
 </html>

@@ -1,3 +1,4 @@
+        <header>
             <div id="buttons">
                 <?php 
                 if (array_key_exists('permission', $_SESSION))
@@ -58,3 +59,4 @@
                 }
                 ?>       
             </div>
+        </header>

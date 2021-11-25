@@ -8,9 +8,6 @@
 <title>Tytuł strony</title> 
 </head> 
 <body> 
-        <header>   
-            <?php include(_ROOT_PATH.DIRECTORY_SEPARATOR.'view'.DIRECTORY_SEPARATOR.'header.php'); ?>                
-        </header>
         <section>
             <h1>Login</h1> 
             <form action="index.php?action=login" method="POST" class="main">
@@ -35,8 +32,5 @@
                 </fieldset>
             </form>        
         </section>
-        <footer>
-            <?php include(_ROOT_PATH.DIRECTORY_SEPARATOR.'view'.DIRECTORY_SEPARATOR.'footer.php'); ?>
-        </footer>
 </body> 
 </html> 

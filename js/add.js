@@ -84,14 +84,14 @@ function onChange()
     }
     else
     {
-      alert("File type not supported");
+      alert("Nieobsługiwany typ pliku");
     }
     input.value=null;
   }
   else
   {
     size = size - input.size;
-    alert("File is too big");
+    alert("Plik jest za duży. Maksymalny rozmiar pliku to 100MB");
     input.value=null;
   }
 }
@@ -143,6 +143,6 @@ function onSubmit(event)
 
   }
   else
-    alert("Something went wrong");
+    alert("Coś poszło nie tak");
     return false;
 }

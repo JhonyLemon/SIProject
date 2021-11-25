@@ -8,7 +8,7 @@ html,body{
 header{
     border-top-left-radius: 10px;
     border-top-right-radius: 10px;
-    min-height: 40px;
+    height: 40px;
     background-color: #181818;
     border-bottom: 4px solid dodgerblue;
 }
@@ -185,24 +185,36 @@ h2{
     cursor: pointer;
     transition: 0.3s;
   } 
+
+  .figlobby{
+    margin-left: auto;  
+    margin-right: auto;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    text-align: center;
+  }
   
   .tiles {
-    height: auto; 
-    min-height: 70%;
-    display: flex; 
-    justify-content: left;
-    max-width: 80%;
+    display: block;
+    height: auto;
+    width: auto;
+    margin-left: auto;  
+    margin-right: auto;
+    width: 70%;
 }
 .tile{
     width: auto;
     height: auto;
+    margin-left: auto;  
+    margin-right: auto;
     max-height: 400px;
     max-width: 400px;
     background-color: black;
     cursor: pointer;
+    padding: 20px;
 }
 .tile>img{
-    width: 200px;
+    width: 400px;
     height: 400px;
 }
 

@@ -11,9 +11,6 @@
 <title>Tytuł strony</title> 
 </head> 
 <body> 
-        <header>
-            <?php include(_ROOT_PATH.DIRECTORY_SEPARATOR.'view'.DIRECTORY_SEPARATOR.'header.php'); ?>      
-        </header>
         <section>
             <?php if(isset($Error))
                     echo $Error;
@@ -50,8 +47,5 @@
                 
             </form>
         </section>
-        <footer>
-            <?php include(_ROOT_PATH.DIRECTORY_SEPARATOR.'view'.DIRECTORY_SEPARATOR.'footer.php'); ?>
-        </footer>
 </body> 
 </html>
