@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Czas generowania: 20 Lis 2021, 21:40
+-- Czas generowania: 26 Lis 2021, 22:53
 -- Wersja serwera: 10.4.21-MariaDB
 -- Wersja PHP: 8.0.11
 
@@ -92,13 +92,6 @@ CREATE TABLE `likedposts` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Zrzut danych tabeli `likedposts`
---
-
-INSERT INTO `likedposts` (`IDuser`, `IDpost`, `vote`) VALUES
-(1, 13, 1);
-
---
 -- Wyzwalacze `likedposts`
 --
 DELIMITER $$
@@ -147,16 +140,6 @@ CREATE TABLE `photos` (
   `description` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
---
--- Zrzut danych tabeli `photos`
---
-
-INSERT INTO `photos` (`IDpost`, `IDphoto`, `ext`, `description`) VALUES
-(12, 13, 'png', 'Mapa z gry Sacred 2'),
-(13, 14, 'bmp', ''),
-(14, 15, 'bmp', 'fdsa'),
-(14, 16, 'bmp', 'aaaa');
-
 -- --------------------------------------------------------
 
 --
@@ -170,15 +153,6 @@ CREATE TABLE `posts` (
   `valid` tinyint(1) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
---
--- Zrzut danych tabeli `posts`
---
-
-INSERT INTO `posts` (`IDpost`, `title`, `points`, `valid`) VALUES
-(12, 'Mapka', 0, 0),
-(13, 'Misiek', 1, 0),
-(14, 'fdsa', 0, 0);
-
 -- --------------------------------------------------------
 
 --
@@ -189,15 +163,6 @@ CREATE TABLE `userposts` (
   `IDpost` int(11) UNSIGNED NOT NULL,
   `IDuser` int(11) UNSIGNED NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
---
--- Zrzut danych tabeli `userposts`
---
-
-INSERT INTO `userposts` (`IDpost`, `IDuser`) VALUES
-(12, 1),
-(13, 1),
-(14, 1);
 
 -- --------------------------------------------------------
 
@@ -220,7 +185,7 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`IDuser`, `login`, `email`, `password`, `permission`, `birthday`, `points`) VALUES
-(1, 'adam', 'adamnosol@gmail.com', '$2y$10$ZjzWwpc30STeWbPRxMNmied/O1XisDhFgt0L5FE/FMFGNLYRkBskG', 'admin', NULL, 1),
+(1, 'adam', 'adamnosol@gmail.com', '$2y$10$ZjzWwpc30STeWbPRxMNmied/O1XisDhFgt0L5FE/FMFGNLYRkBskG', 'admin', NULL, 0),
 (2, 'kamil', 'kamil@wp.pl', '$2y$10$X2IQhv79RYrnVNvyRv/sH.wDvj.0QuSWnLxJxThJ7u6b1Udx9N7BK', 'user', NULL, 0),
 (3, 'kacper', 'kamil@wp.pl', '$2y$10$UNF2LDzazIQTLC1rwnXUaeulQzE.F1dOzcLR7r7RXNqY7RF5ezlzi', 'user', NULL, 0),
 (4, 'fda', 'fdsa@wp.pl', '$2y$10$lBlGWNURbQIqsVBOEUa3Y.GATv5DMuZpkWiIEpUsru6.HGAYCLYFa', 'user', NULL, 0);
@@ -298,13 +263,13 @@ ALTER TABLE `comments`
 -- AUTO_INCREMENT dla tabeli `photos`
 --
 ALTER TABLE `photos`
-  MODIFY `IDphoto` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `IDphoto` int(11) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT dla tabeli `posts`
 --
 ALTER TABLE `posts`
-  MODIFY `IDpost` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `IDpost` int(11) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT dla tabeli `users`

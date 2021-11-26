@@ -1,19 +1,14 @@
 <?php
+ob_start();
+error_reporting(E_ALL); 
+ini_set('display_errors', TRUE);
 session_start();
 
 define('_ROOT_PATH', dirname(__FILE__)); 
 define('_PHOTO_PATH', 'posts'); 
+define('_ICON_PATH', 'icons');
 
-function redirect($url)
-{
-    header("Location: index.php?action=$url",TRUE,301);
-}
-function testInput($data) 
-{ 
-    $data = trim($data);
-    $data = htmlspecialchars($data);   
-    return $data;
-}
+require_once(_ROOT_PATH.DIRECTORY_SEPARATOR.'functions'.DIRECTORY_SEPARATOR.'library.php');
  
 $actions = array('home', 'register', 'login', 'lobby','post','settings','postval','users','random','logout','add','pageNotFound'); 
 $action = 'home'; 
@@ -46,4 +41,5 @@ if(file_exists(_ROOT_PATH.DIRECTORY_SEPARATOR.'view'.DIRECTORY_SEPARATOR.$action
     include(_ROOT_PATH.DIRECTORY_SEPARATOR.'view'.DIRECTORY_SEPARATOR.$action.'.php');
     include(_ROOT_PATH.DIRECTORY_SEPARATOR.'view'.DIRECTORY_SEPARATOR.'footer.php');
 }
+ob_end_flush();
 ?>

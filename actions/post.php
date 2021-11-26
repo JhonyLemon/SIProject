@@ -1,9 +1,22 @@
 <?php
 $do='';
+
+if(isset($_GET['id']))
+{
+    $stmt = $db->prepare("SELECT IDpost,valid FROM posts WHERE IDpost=(SELECT MIN(IDpost) FROM posts WHERE IDpost>:id)");
+    $stmt->bindValue(':id', $_GET['id']);
+    $stmt->execute();
+    $next=$stmt->fetch();
+
+    $stmt = $db->prepare("SELECT IDpost,valid FROM posts WHERE IDpost=(SELECT MAX(IDpost) FROM posts WHERE IDpost<:id)");
+    $stmt->bindValue(':id', $_GET['id']);
+    $stmt->execute();
+    $previous=$stmt->fetch();
+}
+
 if(array_key_exists('type',$_POST) && isset($_SESSION['id']))
 {
     $temp=explode('.',$_POST['type']);
-    var_dump($temp);
     if(array_key_exists('1',$temp))
     {
         
@@ -139,6 +152,17 @@ if(array_key_exists('type',$_POST) && isset($_SESSION['id']))
         }
         else if($temp['0']=='delete')
         {
+            
+            $stmt = $db->prepare('SELECT IDphoto,ext FROM posts LEFT JOIN photos ON posts.IDpost=photos.IDpost WHERE posts.IDpost=:id && valid=:valid');
+            $stmt->bindValue(':valid', $_GET['valid']);
+            $stmt->bindValue(':id', $_GET['id']);
+            $stmt->execute();
+            $files=$stmt->fetchAll();
+            var_dump($files);
+            for($i=0; $i<count($files); $i++)
+            {
+                unlink(_PHOTO_PATH.DIRECTORY_SEPARATOR.$files[$i]['IDphoto'].'.'.$files[$i]['ext']);
+            }
             try 
             { 
                 $db->beginTransaction();
@@ -155,6 +179,26 @@ if(array_key_exists('type',$_POST) && isset($_SESSION['id']))
                 $db->rollBack();
                 $Error='Unexpected error occured';
             } 
+            /*
+            if($next)
+            {
+                //var_dump("post&id={$next['IDpost']}&valid={$next['valid']}");
+                header("Location:index.php?action=post&id={$next['IDpost']}&valid={$next['valid']}",TRUE,301);
+                exit();
+            //redirect("post&id={$next['IDpost']}&valid={$next['valid']}");
+            }
+            else if($previous)
+            {
+                //var_dump("post&id={$previous['IDpost']}&valid={$previous['IDpost']}");
+                header("Location:index.php?action=post&id={$previous['IDpost']}&valid={$previous['IDpost']}",TRUE,301);
+                exit();
+            //redirect("post&id={$previous['IDpost']}&valid={$previous['IDpost']}");
+            }
+            else
+            {
+            redirect("home");
+            }
+            */
         }
     }
 
