@@ -18,36 +18,43 @@
             ?>
         </div>
         <div class="list">
-                <?php
-                if(isset($_GET['id']))
-                {
-                    
-                    if($post=$stmt->fetch())
-                    {
-                        echo '<h1>'.$post['title'].'</h1>';
+        
+        <?php if (isset($_GET['id'])): ?>
+                <?php if ($post=$stmt->fetch()): ?>
+                    <h1><?php $post['title'] ?></h1>
+                    <?php
                         do
                         {
                             $row=PostURL($post);
-                            // var_dump(_PHOTO_PATH.DIRECTORY_SEPARATOR.$posts['IDphoto'].'.'.$posts['ext']);
-                            echo "
-                            <div class='element'>
-                            <img class='img' src=\"{$row['url']}\" alt=\"{$row['alt']}\"/>
-                             <figcaption class='figpost'>{$row['description']}</figcaption>
-                             </div>";
+                    ?>
+                    <div class='element'>
+                        <img class='img' src="<?php echo $row['url'] ?>" alt="<?php echo $row['alt'] ?>"/>
+                        <figcaption class='figpost'><?php echo $row['description'] ?></figcaption>
+                    </div>
+                    <?php
                         }while($post=$stmt->fetch());
-
-                    }
-                    else
-                    {
-                        redirect('home');
-                    }
-                }
-                else
-                {
-                    redirect('pageNotFound');
-                }
-                ?>
-            </div>
+                    ?>
+                <?php else: ?>
+                    <?php redirect('home'); ?>
+                <?php endif; ?>
+        <?php else: ?>  
+            <?php redirect('pageNotFound'); ?>          
+        <?php endif; ?>
+        </div>
+        <?php if (isset($previous) && $previous): ?>   
+        <div class="previousPost">
+            <form method="post" action="index.php?action=post&id=<?php echo $previous['IDpost'] ?>&valid=<?php echo $previous['valid'] ?>" id="previousPost" name="previous">
+                <input type="image" width="30" height="30" name="previousPostButton" value="" src="<?php echo IconsURL('LeftPost') ?>">
+            </form>
+        </div>
+        <?php endif; ?>
+        <?php if (isset($next) && $next): ?>
+        <div class="nextPost">
+            <form method="post" action="index.php?action=post&id=<?php echo $next['IDpost'] ?>&valid=<?php echo $next['valid'] ?>" id="nextPost" name="next">
+                <input type="image" width="30" height="30" name="nextPostButton" value="" src="<?php echo IconsURL('RightPost') ?>">
+            </form>
+        </div>
+        <?php endif; ?>
             <div>
             <form style="display:none" method="post" id="hiddenactionform" name="form">
                 <input type="text" name="type" id="hiddenaction" value="" disabled=true>
@@ -63,17 +70,17 @@
                         <img width="30" height="30" class="icons" id="upvote.ON" src="<?php echo IconsURL('UpVoteOFF') ?>"/>
                         <?php echo $points['0']; ?>
                         <img width="30" height="30" class="icons" onclick="onClick(event)" id="downvote.OFF" src="<?php echo IconsURL('DownVoteON') ?>"/>
-                    <?php endif ?>
+                    <?php endif; ?>
                 <?php else: ?>
                     <img width="30" height="30" class="icons" onclick="onClick(event)" id="upvote.ON" src="<?php echo IconsURL('UpVoteOFF') ?>"/>
                     <?php echo $points['0']; ?>
                     <img width="30" height="30" class="icons" onclick="onClick(event)" id="downvote.ON" src="<?php echo IconsURL('DownVoteOFF') ?>"/>
-                <?php endif ?>
+                <?php endif; ?>
             <?php else: ?>
                 <img width="30" height="30" class="icons" id="upvote.ON" src="<?php echo IconsURL('UpVoteOFF') ?>"/>
                 <?php echo $points['0']; ?>
                 <img width="30" height="30" class="icons" id="downvote.ON" src="<?php echo IconsURL('DownVoteOFF') ?>"/>
-            <?php endif ?>
+            <?php endif; ?>
 
             <?php if (isset($favorite)): ?>
                 <?php if ($favorite): ?>
@@ -83,7 +90,7 @@
                 <?php endif ?>
             <?php else: ?>
                 <img width="30" height="30" class="icons" id="favorite.ON" src="<?php echo IconsURL('FavoriteOFF') ?>"/>
-            <?php endif ?>
+            <?php endif; ?>
 
             <?php if (array_key_exists('permission',$_SESSION) && ($_SESSION['permission']=='admin' || $_SESSION['permission']=='moderator')): ?>
                 <?php if ($valid): ?>
@@ -97,77 +104,40 @@
                         <button onclick="onClickX(event)" id="No">No</button>
                     </div>
                 </div>
-            <?php endif ?>
-
-
-                <?php
-                /*
-                if(isset($vote))
-                {
-                    if($vote)
-                    {
-                        if($vote['vote'])
-                        {
-                            echo "<input type='image' width='30' height='30' class='icons' onclick='onClick(event)' id='upvote.OFF' src=\"".'icons'.DIRECTORY_SEPARATOR.'UpVoteON.png'."\"/>";
-                            echo $points['0'];
-                            echo "<input type='image' width='30' height='30' class='icons' onclick='onClick(event)' id='downvote.ON' src=\"".'icons'.DIRECTORY_SEPARATOR.'DownVoteOFF.png'."\"/>";
-                        }
-                        else
-                        {
-                            echo "<input type='image' width='30' height='30' class='icons' onclick='onClick(event)' id='upvote.ON' src=\"".'icons'.DIRECTORY_SEPARATOR.'UpVoteOFF.png'."\"/>";
-                            echo $points['0'];
-                            echo "<input type='image' width='30' height='30' class='icons' onclick='onClick(event)' id='downvote.OFF' src=\"".'icons'.DIRECTORY_SEPARATOR.'DownVoteON.png'."\"/>";
-                
-                        }
-
-                    } 
-                    else
-                    {
-                        echo "<input type='image' width='30' height='30' class='icons' onclick='onClick(event)' id='upvote.ON' src=\"".'icons'.DIRECTORY_SEPARATOR.'UpVoteOFF.png'."\"/>";
-                        echo $points['0'];
-                        echo "<input type='image' width='30' height='30' class='icons' onclick='onClick(event)' id='downvote.ON' src=\"".'icons'.DIRECTORY_SEPARATOR.'DownVoteOFF.png'."\"/>";
-                    }
-                }
-                else
-                {
-                    echo "<input type='image' width='30' height='30' class='icons' id='upvote.ON' src=\"".'icons'.DIRECTORY_SEPARATOR.'UpVoteOFF.png'."\"/>";
-                    echo $points['0'];
-                    echo "<input type='image' width='30' height='30' class='icons' id='downvote.ON' src=\"".'icons'.DIRECTORY_SEPARATOR.'DownVoteOFF.png'."\"/>";
-                
-                }
-                
-                if(isset($favorite))
-                {
-                    if($favorite)
-                    {
-                        echo "<input type='image' width='30' height='30' class='icons' onclick='onClick(event)' id='favorite.OFF' src=\"".'icons'.DIRECTORY_SEPARATOR.'FavoriteON.png'."\"/>";
-                    }
-                    else
-                    {
-                        echo "<input type='image' width='30' height='30' class='icons' onclick='onClick(event)' id='favorite.ON' src=\"".'icons'.DIRECTORY_SEPARATOR.'FavoriteOFF.png'."\"/>";
-                    }
-                } 
-                else
-                {
-                    echo "<input type='image' width='30' height='30' class='icons' id='favorite.ON' src=\"".'icons'.DIRECTORY_SEPARATOR.'FavoriteOFF.png'."\"/>";
-                }
-                if(array_key_exists('permission',$_SESSION) && ($_SESSION['permission']=='admin' || $_SESSION['permission']=='moderator'))
-                {
-                    if($valid)
-                    echo "<input type='image' width='30' height='30' class='icons' onclick='onClickModal(event)' id='validate' src=\"".'icons'.DIRECTORY_SEPARATOR.'Valid.png'."\"/>";
-                    echo "<input type='image' width='30' height='30' class='icons' onclick='onClickModal(event)' id='delete' src=\"".'icons'.DIRECTORY_SEPARATOR.'Delete.png'."\"/>";
-                    echo "<div id='actionModal' class='modal'>
-                            <div id='actionModalContent' class='modal-content'>
-                                <span onclick='onClickX(event)' class='close'>&times;</span>
-                                <button onclick='onClick(event)' id='Yes'>Yes</button>
-                                <button onclick='onClickX(event)' id='No'>No</button>
-                            </div>
-                          </div>";
-                }
-                */
-?>
-                
+            <?php endif; ?>      
             </div>
+
+            
+                <div class="comments">
+                    <h2>Komentarze</h2>
+                <form onsubmit="onAddComment(event)" id="FormComment" name="form">
+                    <input type="text" name="comment" value="">
+                    <input type=submit value="Dodaj Komentarz" name="comment" id="Comment">
+                </form>
+                <?php if (count($sortedComments)!=0): ?>
+                    <?php foreach($sortedComments as $key => $value): ?>
+                        <div class="comment">
+                            <p>
+                                User:<?php echo $sortedComments[$key]['login'] ?><br>
+                                     <?php echo $sortedComments[$key]['text'] ?><br>
+                                     <form onsubmit="onVoteComment(event)" id="FormComment.<?php echo $sortedComments[$key]['IDcomment'] ?>" name="VoteComment">
+                                        <input onclick="onClickCommentVote(event)" type=image width="30" height="30" class="icons" value="UpVote" name="CommentUpVote" id="CommentUpVote.<?php $sortedComments[$key]['IDcomment'] ?>" src="<?php echo IconsURL(GetCommentIconUpVote($voteComments,$sortedComments[$key]['IDcomment'])) ?>">
+                                        <input style="display:none" type="text" name="ID" value="" disabled=true>
+                                        <?php echo $sortedComments[$key]['points']?>
+                                        <input onclick="onClickCommentVote(event)" type=image width="30" height="30" class="icons" value="DownVote" name="CommentDownVote" id="CommentDownVote.<?php $sortedComments[$key]['IDcomment'] ?>" src="<?php echo IconsURL(GetCommentIconDownVote($voteComments,$sortedComments[$key]['IDcomment'])) ?>"><br>
+                                     </form>
+                                     <label id="<?php echo $sortedComments[$key]['IDcomment'] ?>" onclick="onClickAnswerComment(event)">Odpowiedz</label>
+                                     <form style="display:none" onsubmit="onAnswer(event)" id="AnswerComment.<?php echo $sortedComments[$key]['IDcomment'] ?>" name="AnswerComment">
+                                     <input style="display:none" type="text" name="ID" value="" disabled=true>
+                                     <input type="text" name="text" value="" disabled=true>
+                                     <input type=submit value="Odpowiedz" name="answer" id="CommentAnswer" disabled=true>
+                                     </form>
+                            </p>
+                        </div>
+                    <?php endforeach; ?>
+                    <?php endif; ?> 
+                </div>
+             
         </section>
 </body> 
 </html>

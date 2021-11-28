@@ -1,10 +1,6 @@
 <?php
 if(array_key_exists('title',$_POST))
-{
-  //  var_dump($_POST);
-  //  echo "<br>";
-  //  var_dump($_FILES);
-  //  echo "<br>";  
+{ 
             try 
             { 
                 $db->beginTransaction();
@@ -14,23 +10,18 @@ if(array_key_exists('title',$_POST))
                     $stmt->execute();
                     $stmt->closeCursor();
                     $id=$db->lastInsertId();
-                   // var_dump($id);
-                   // echo "<br>";
-                   // var_dump(count($_FILES['files']['name']));
-                   // echo "<br>";
                     for($i=0; $i<count($_FILES['files']['name']); $i++)
                     {
                         $temp = explode(".", $_FILES["files"]["name"][$i]);
                         $stmt = $db->prepare('INSERT INTO photos (IDpost,description,ext) VALUES (:id,:description,:ext)');
                         $stmt->bindValue(':id', $id);
                         $stmt->bindValue(':description', $_POST['descriptions'][$i]);
-                        $stmt->bindValue(':ext', $temp['1']);
+                        $stmt->bindValue(':ext', end($temp));
                         $stmt->execute();
                         $stmt->closeCursor();
                         $id_photo=$db->lastInsertId();
-                       // var_dump($id_photo);
                         
-                        $dest = _PHOTO_PATH.DIRECTORY_SEPARATOR . $id_photo .'.'. $temp['1'];
+                        $dest = _PHOTO_PATH.DIRECTORY_SEPARATOR . $id_photo .'.'. end($temp);
                         if (!@move_uploaded_file($_FILES['files']['tmp_name'][$i], $dest)) 
                         {
                             throw new Exception;

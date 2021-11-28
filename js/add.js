@@ -137,7 +137,7 @@ function onSubmit(event)
     processData:false,              // To send DOMDocument or non processed data file it is set to false (i.e. data should not be in the form of string)
     success: function(data)         // A function to be called if request succeeds
     {
-        $("html").html(data);
+      window.location.replace("index.php?action=lobby");
     }
 });
 

@@ -2,7 +2,7 @@
 
 function redirect($url)
 {
-    header("Location: index.php?action=$url",TRUE,301);
+    header("Location:index.php?action=$url",FALSE,301); exit;
 }
 function testInput($data) 
 { 
@@ -23,6 +23,47 @@ $post['url']=_PHOTO_PATH.DIRECTORY_SEPARATOR.$row['IDphoto'].'.'.$row['ext'];
 $post['alt']=$row['IDpost'];
 $post['description']=$row['description'];
 return $post;
+}
+
+function GetChildComments($IDparent,$i,$comments,&$children)
+{
+    for($j=$i+1; $j<count($comments); $j++)
+    {
+        if($comments[$j]['IDparent']==$IDparent)
+        {
+            $children[]=$comments[$j];  
+            GetChildComments($comments[$j]['IDcomment'],$j,$comments,$children);
+        }
+    }
+}
+
+function GetCommentIconUpVote($voted,$id)
+{
+    foreach($voted as $key => $value)
+    {
+        if($voted[$key]['IDcomment']==$id)
+        {
+            if($voted[$key]['vote']==1)
+                return "UpVoteON";
+            else
+                return "UpVoteOFF";
+        }
+    }
+    return "UpVoteOFF";
+}
+function GetCommentIconDownVote($voted,$id)
+{
+    foreach($voted as $key => $value)
+    {
+        if($voted[$key]['IDcomment']==$id)
+        {
+            if($voted[$key]['vote']==0)
+                return "DownVoteON";
+            else
+                return "DownVoteOFF";
+        }
+    }
+    return "DownVoteOFF";
 }
 
 ?>

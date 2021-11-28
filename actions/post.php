@@ -179,32 +179,167 @@ if(array_key_exists('type',$_POST) && isset($_SESSION['id']))
                 $db->rollBack();
                 $Error='Unexpected error occured';
             } 
-            /*
-            if($next)
-            {
-                //var_dump("post&id={$next['IDpost']}&valid={$next['valid']}");
-                header("Location:index.php?action=post&id={$next['IDpost']}&valid={$next['valid']}",TRUE,301);
-                exit();
-            //redirect("post&id={$next['IDpost']}&valid={$next['valid']}");
-            }
-            else if($previous)
-            {
-                //var_dump("post&id={$previous['IDpost']}&valid={$previous['IDpost']}");
-                header("Location:index.php?action=post&id={$previous['IDpost']}&valid={$previous['IDpost']}",TRUE,301);
-                exit();
-            //redirect("post&id={$previous['IDpost']}&valid={$previous['IDpost']}");
-            }
-            else
-            {
-            redirect("home");
-            }
-            */
         }
     }
 
 }
+else if(array_key_exists('comment',$_POST) && isset($_SESSION['id']))
+{
+    $db->beginTransaction();
+    $stmt = $db->prepare("INSERT INTO comments (IDparent,IDuser,IDpost,text) VALUES (:IDparent,:IDuser,:IDpost,:text)");
+    $stmt->bindValue(':IDparent', 0);
+    $stmt->bindValue(':IDuser', $_SESSION['id']);
+    $stmt->bindValue(':IDpost', $_GET['id']);
+    $stmt->bindValue(':text', $_POST['comment']);
+    $stmt->execute();
+    $stmt->closeCursor();
+$db->commit();
+unset($_POST);
+}
+else if(array_key_exists('ID',$_POST) && isset($_SESSION['id']))
+{
+    if(array_key_exists('text',$_POST))
+    {
+        try 
+        { 
+            $db->beginTransaction();
+                $stmt = $db->prepare("INSERT INTO comments (IDparent,IDuser,IDpost,text) VALUES (:IDparent,:IDuser,:IDpost,:text)");
+                $stmt->bindValue(':IDparent', $_POST['ID']);
+                $stmt->bindValue(':IDuser', $_SESSION['id']);
+                $stmt->bindValue(':IDpost', $_GET['id']);
+                $stmt->bindValue(':text', $_POST['text']);
+                $stmt->execute();
+                $stmt->closeCursor();
+            $db->commit();
+            unset($_POST);
+        }
+        catch(Expection $e)
+        {
+            $db->rollBack();
+            $Error='Unexpected error occured';
+        } 
+    }
+    else
+    {
+        $idcomment=explode('.',$_POST['ID']);
+        $stmt = $db->prepare("SELECT vote FROM likedcomments WHERE IDuser=:IDuser && IDcomment=:IDcomment");
+        $stmt->bindValue(':IDuser', $_SESSION['id']);
+        $stmt->bindValue(':IDcomment', $idcomment['1']);
+        $stmt->execute();
+        $likedcomments=$stmt->fetch();
+        var_dump($likedcomments);
+        var_dump($_POST['ID']);
+        if(!$likedcomments)
+        {
+            try 
+            { 
+                $db->beginTransaction();
+                    $stmt = $db->prepare("INSERT INTO likedcomments (IDcomment,IDuser,vote) VALUES (:IDcomment,:IDuser,:vote)");
+                    $stmt->bindValue(':IDuser', $_SESSION['id']);
+                    $stmt->bindValue(':IDcomment', $idcomment['1']);
+                    if($idcomment['0']=='CommentUpVote')
+                    $stmt->bindValue(':vote', 1);
+                    else
+                    $stmt->bindValue(':vote', 0);
+                    $stmt->execute();
+                    $stmt->closeCursor();
+                $db->commit();
+                unset($_POST);
+            }
+            catch(Expection $e)
+            {
+                $db->rollBack();
+                $Error='Unexpected error occured';
+            } 
+        }
+        else
+        {
+            if($likedcomments['vote']==1)
+            {
+                if($idcomment['0']=='CommentUpVote')
+                {
+                    try 
+                    { 
+                        $db->beginTransaction();
+                            $stmt = $db->prepare("DELETE FROM likedcomments WHERE IDuser=:IDuser && IDcomment=:IDcomment");
+                            $stmt->bindValue(':IDuser', $_SESSION['id']);
+                            $stmt->bindValue(':IDcomment', $idcomment['1']);
+                            $stmt->execute();
+                            $stmt->closeCursor();
+                        $db->commit();
+                        unset($_POST);
+                    }
+                    catch(Expection $e)
+                    {
+                        $db->rollBack();
+                        $Error='Unexpected error occured';
+                    } 
+                }
+                else
+                {
+                    try 
+                    { 
+                        $db->beginTransaction();
+                            $stmt = $db->prepare("UPDATE likedcomments SET vote=0 WHERE IDuser=:IDuser && IDcomment=:IDcomment");
+                            $stmt->bindValue(':IDuser', $_SESSION['id']);
+                            $stmt->bindValue(':IDcomment', $idcomment['1']);
+                            $stmt->execute();
+                            $stmt->closeCursor();
+                        $db->commit();
+                        unset($_POST);
+                    }
+                    catch(Expection $e)
+                    {
+                        $db->rollBack();
+                        $Error='Unexpected error occured';
+                    }
+                }
+            }
+            else
+            {
+                if($idcomment['0']=='CommentUpVote')
+                {
+                    try 
+                    { 
+                        $db->beginTransaction();
+                            $stmt = $db->prepare("UPDATE likedcomments SET vote=1 WHERE IDuser=:IDuser && IDcomment=:IDcomment");
+                            $stmt->bindValue(':IDuser', $_SESSION['id']);
+                            $stmt->bindValue(':IDcomment', $idcomment['1']);
+                            $stmt->execute();
+                            $stmt->closeCursor();
+                        $db->commit();
+                        unset($_POST);
+                    }
+                    catch(Expection $e)
+                    {
+                        $db->rollBack();
+                        $Error='Unexpected error occured';
+                    }
+                }
+                else
+                {
+                    try 
+                    { 
+                        $db->beginTransaction();
+                            $stmt = $db->prepare("DELETE FROM likedcomments WHERE IDuser=:IDuser && IDcomment=:IDcomment");
+                            $stmt->bindValue(':IDuser', $_SESSION['id']);
+                            $stmt->bindValue(':IDcomment', $idcomment['1']);
+                            $stmt->execute();
+                            $stmt->closeCursor();
+                        $db->commit();
+                        unset($_POST);
+                    }
+                    catch(Expection $e)
+                    {
+                        $db->rollBack();
+                        $Error='Unexpected error occured';
+                    }
+                }
+            }
+        }
 
-
+    }
+}
 
 if(isset($_GET['id']))
 {
@@ -232,6 +367,26 @@ if(isset($_GET['id']))
     $stmt->execute();
     $favorite=$stmt->fetch();
     }
+
+    $stmt = $db->prepare('SELECT IDcomment,IDparent,text,comments.points,login FROM comments LEFT JOIN users ON comments.IDuser=users.IDuser  WHERE IDpost=:id');
+    $stmt->bindValue(':id', $_GET['id']);
+    $stmt->execute();
+    $comments=$stmt->fetchAll();
+    $sortedComments=array();
+    for($i=0; $i<count($comments); $i++)
+    {
+        if($comments[$i]['IDparent']==0)
+        {
+        $sortedComments[]=$comments[$i];
+        GetChildComments($comments[$i]['IDcomment'],$i,$comments,$sortedComments);
+        }
+    }
+
+    $stmt = $db->prepare('SELECT likedcomments.IDcomment,vote FROM likedcomments LEFT JOIN comments ON comments.IDcomment=likedcomments.IDcomment WHERE IDpost=:id AND likedcomments.IDuser=:IDuser');
+    $stmt->bindValue(':id', $_GET['id']);
+    $stmt->bindValue(':IDuser', $_SESSION['id']);
+    $stmt->execute();
+    $voteComments=$stmt->fetchAll();
 
     $stmt = $db->prepare('SELECT posts.IDpost,title,IDphoto,ext,description,points FROM posts LEFT JOIN photos ON posts.IDpost=photos.IDpost WHERE posts.IDpost=:id && valid=:valid');
     $stmt->bindValue(':valid', $_GET['valid']);
