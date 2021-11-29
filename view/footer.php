@@ -1,3 +1,3 @@
 <footer>
-    <p>© ELEKTRON</p>
+    <img class="logo "src="Kremlogo.png">
 </footer>

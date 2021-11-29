@@ -1,8 +1,13 @@
+<head>
+    <link rel='shortcut icon' type='image/x-icon' href='logokrem.ico' />
+    <title>Kremóweczka - memy do kawusi</title>
+</head>        
         <header>
             <div id="buttons">
                 <?php 
                 if (array_key_exists('permission', $_SESSION))
                 {
+                    echo '<a class=button href=index.php?action=home><img src="logo.png" style="width:20px; height:20px;"></a>';
                     switch($_SESSION['permission'])
                     {
                         case 'admin':
