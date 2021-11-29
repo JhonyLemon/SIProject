@@ -5,9 +5,10 @@
         <header>
             <div id="buttons">
                 <?php 
+                echo '<a class=button href=index.php?action=home><img class="logo" src="logo.png"></a>';
                 if (array_key_exists('permission', $_SESSION))
                 {
-                    echo '<a class=button href=index.php?action=home><img src="logo.png" style="width:20px; height:20px;"></a>';
+                    
                     switch($_SESSION['permission'])
                     {
                         case 'admin':

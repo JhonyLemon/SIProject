@@ -1,3 +1,3 @@
 <footer>
-    <img class="logo "src="Kremlogo.png">
+    <img class="logofooter" src="Kremlogo.png">
 </footer>

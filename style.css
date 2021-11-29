@@ -1,30 +1,35 @@
 html,body{
-    background-color: #414141;
+    background-color: #4A2512;
     height: calc(100% - 4px);
     margin: 2px;
     min-height: 630px;
     min-width: 600px;
 }
 header{
-    position: relative;
+    position: fixed;
+    top:0;
+    left: 0;
+    right: 0;
     border-top-left-radius: 10px;
     border-top-right-radius: 10px;
-    height: 40px;
-    background-color: #181818;
-    border-bottom: 4px solid dodgerblue;
+    min-height: 40px;
+    background-color: #FFFDD0;
+    border-bottom: 4px solid orange;
 }
 section{
+    margin-top: 40px;
     min-height: 90%;
     font-weight: bold;
-    color: dodgerblue;
-    background-color: #414141;
+    color: orange;
+    background-color: #4A2512;
 }
 footer{
     border-bottom-left-radius: 10px;
     border-bottom-right-radius: 10px;
-    border-top: 4px solid dodgerblue;
+    border-top: 4px solid orange;
     min-height: 40px;
-    background-color: #181818;
+    bottom: 0;
+    background-color: #FFFDD0;
     padding-left:2%;
     color: white;
 }
@@ -37,8 +42,9 @@ footer{
 } 
 .button{
     position: relative;
-    background-color: #181818;
-    color: white;
+    font-weight: bold;
+    background-color: #FFFDD0;
+    color: black;
     top: 20%;
     padding: 4px;
     text-align: center;
@@ -54,6 +60,14 @@ footer{
 }
 
 .logo
+{
+    position: relative;
+    top:6px;
+    width:25px;
+    height:25px;
+}
+
+.logofooter
 {
     position: relative;
     height: 30px; 
@@ -79,26 +93,26 @@ form{
 }
 
 fieldset{
-    border: 2px dashed gray;
+    border: 2px dashed orange;
 }
 
 input[type="text"],[type="password"],[type="file"],[type="email"]{
     border: 1px solid;
     font-weight: bold;
-    background-color: rgb(25, 126, 228);
-    color: white;
+    background-color:#FFFDD0;
+    color: black;
     padding: 6px;
     width: 260px;
     box-sizing: border-box;
 }
 input[type="date"]{
     border: 1px solid;
-    background-color: rgb(25, 126, 228);
+    background-color: #FFFDD0;
     color: white;
 }
 textarea{
     border: 1px solid;
-    background-color: rgb(25, 126, 228);
+    background-color: #FFFDD0;
     color: white;
 }
 select{
