@@ -18,8 +18,12 @@
                         echo "
                         <div onclick='onClick(event)' class='tile'>
                         <img src=\""._PHOTO_PATH.DIRECTORY_SEPARATOR.$posts['IDphoto'].'.'.$posts['ext']."\" alt=\"".$posts['IDpost']."\"/>
-                        <figcaption>{$posts['title']}</figcaption>
-                        </div>";
+                        <figcaption class='figlobby'><div>{$posts['title']}</div>";
+                        if($posts['points']>=0)
+                            echo "<div style='color: greenyellow'>{$posts['points']}</div></figcaption>";
+                        else
+                            echo "<div style='color: crimson'>{$posts['points']}</div></figcaption>";
+                        echo "</div>";
                     }
                 ?>
             </div>
