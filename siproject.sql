@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Czas generowania: 28 Lis 2021, 16:20
+-- Czas generowania: 29 Lis 2021, 18:27
 -- Wersja serwera: 10.4.21-MariaDB
 -- Wersja PHP: 8.0.11
 
@@ -41,13 +41,13 @@ CREATE TABLE `comments` (
 --
 
 INSERT INTO `comments` (`IDcomment`, `IDparent`, `IDuser`, `IDpost`, `text`, `points`) VALUES
-(1, 0, 1, 3, 'cos', 0),
+(1, 0, 1, 3, 'cos', -1),
 (2, 0, 1, 3, 'cos', 0),
 (3, 1, 1, 3, 'cos', 0),
 (4, 1, 1, 3, 'cos', 0),
 (5, 3, 1, 3, 'cos', 0),
 (6, 5, 1, 3, 'cos', 0),
-(7, 2, 1, 3, 'Był sobie las', 0),
+(7, 2, 1, 3, 'Był sobie las', 1),
 (8, 0, 1, 3, 'Adam tu był', 0);
 
 -- --------------------------------------------------------
@@ -72,6 +72,14 @@ CREATE TABLE `likedcomments` (
   `IDuser` int(11) UNSIGNED NOT NULL,
   `vote` tinyint(1) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Zrzut danych tabeli `likedcomments`
+--
+
+INSERT INTO `likedcomments` (`IDcomment`, `IDuser`, `vote`) VALUES
+(7, 1, 1),
+(1, 1, 0);
 
 --
 -- Wyzwalacze `likedcomments`
@@ -183,7 +191,7 @@ DELIMITER ;
 CREATE TABLE `photos` (
   `IDpost` int(11) UNSIGNED NOT NULL,
   `IDphoto` int(11) UNSIGNED NOT NULL,
-  `ext` varchar(3) NOT NULL,
+  `ext` varchar(4) NOT NULL,
   `description` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
