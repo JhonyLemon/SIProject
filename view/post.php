@@ -41,21 +41,8 @@
             <?php redirect('pageNotFound'); ?>          
         <?php endif; ?>
         </div>
-        <?php if (isset($previous) && $previous): ?>   
-        <div class="previousPost">
-            <form method="post" action="index.php?action=post&id=<?php echo $previous['IDpost'] ?>&valid=<?php echo $previous['valid'] ?>" id="previousPost" name="previous">
-                <input type="image" width="30" height="30" name="previousPostButton" value="" src="<?php echo IconsURL('LeftPost') ?>">
-            </form>
-        </div>
-        <?php endif; ?>
-        <?php if (isset($next) && $next): ?>
-        <div class="nextPost">
-            <form method="post" action="index.php?action=post&id=<?php echo $next['IDpost'] ?>&valid=<?php echo $next['valid'] ?>" id="nextPost" name="next">
-                <input type="image" width="30" height="30" name="nextPostButton" value="" src="<?php echo IconsURL('RightPost') ?>">
-            </form>
-        </div>
-        <?php endif; ?>
-            <div>
+
+        <div class="control">
             <form style="display:none" method="post" id="hiddenactionform" name="form">
                 <input type="text" name="type" id="hiddenaction" value="" disabled=true>
             </form>
@@ -64,21 +51,21 @@
                 <?php if ($vote): ?>
                     <?php if ($vote['vote']): ?>
                         <img width="30" height="30" class="icons" onclick="onClick(event)" id="upvote.OFF" src="<?php echo IconsURL('UpVoteON') ?>"/>
-                        <?php echo $points['0']; ?>
+                        <div class="points"><?php echo $points['0']; ?></div>
                         <img width="30" height="30" class="icons" id="downvote.ON" src="<?php echo IconsURL('DownVoteOFF') ?>"/>
                     <?php else: ?>
                         <img width="30" height="30" class="icons" id="upvote.ON" src="<?php echo IconsURL('UpVoteOFF') ?>"/>
-                        <?php echo $points['0']; ?>
+                        <div class="points"><?php echo $points['0']; ?></div>
                         <img width="30" height="30" class="icons" onclick="onClick(event)" id="downvote.OFF" src="<?php echo IconsURL('DownVoteON') ?>"/>
                     <?php endif; ?>
                 <?php else: ?>
                     <img width="30" height="30" class="icons" onclick="onClick(event)" id="upvote.ON" src="<?php echo IconsURL('UpVoteOFF') ?>"/>
-                    <?php echo $points['0']; ?>
+                    <div class="points"><?php echo $points['0']; ?></div>
                     <img width="30" height="30" class="icons" onclick="onClick(event)" id="downvote.ON" src="<?php echo IconsURL('DownVoteOFF') ?>"/>
                 <?php endif; ?>
             <?php else: ?>
                 <img width="30" height="30" class="icons" id="upvote.ON" src="<?php echo IconsURL('UpVoteOFF') ?>"/>
-                <?php echo $points['0']; ?>
+                <div class="points"><?php echo $points['0']; ?></div>
                 <img width="30" height="30" class="icons" id="downvote.ON" src="<?php echo IconsURL('DownVoteOFF') ?>"/>
             <?php endif; ?>
 
@@ -106,19 +93,37 @@
                 </div>
             <?php endif; ?>      
             </div>
+            
+        <?php if (isset($previous) && $previous): ?>   
+        <div class="previousPost">
+            <form method="post" action="index.php?action=post&id=<?php echo $previous['IDpost'] ?>&valid=<?php echo $previous['valid'] ?>" id="previousPost" name="previous">
+                <input type="image" width="30" height="30" name="previousPostButton" value="" src="<?php echo IconsURL('LeftPost') ?>">
+            </form>
+        </div>
+        <?php endif; ?>
+        <?php if (isset($next) && $next): ?>
+        <div class="nextPost">
+            <form method="post" action="index.php?action=post&id=<?php echo $next['IDpost'] ?>&valid=<?php echo $next['valid'] ?>" id="nextPost" name="next">
+                <input type="image" width="30" height="30" name="nextPostButton" value="" src="<?php echo IconsURL('RightPost') ?>">
+            </form>
+        </div>
+        <?php endif; ?>
+            
 
             
                 <div class="comments">
-                    <h2>Komentarze</h2>
+                <div class="addcomment">
+                <p style="font-size:40px;">Komentarze</p>
                 <form onsubmit="onAddComment(event)" id="FormComment" name="form">
                     <input type="text" name="comment" value="">
-                    <input type=submit value="Dodaj Komentarz" name="comment" id="Comment">
+                    <input type=submit class="addcomment" value="Dodaj Komentarz" name="comment" id="Comment">
                 </form>
+                </div>
                 <?php if (count($sortedComments)!=0): ?>
                     <?php foreach($sortedComments as $key => $value): ?>
                         <div class="comment">
                             <p>
-                                User:<?php echo $sortedComments[$key]['login'] ?><br>
+                                User: <?php echo $sortedComments[$key]['login'] ?><br>
                                      <?php echo $sortedComments[$key]['text'] ?><br>
                                      <form onsubmit="onVoteComment(event)" id="FormComment.<?php echo $sortedComments[$key]['IDcomment'] ?>" name="VoteComment">
                                         <input onclick="onClickCommentVote(event)" type=image width="30" height="30" class="icons" value="UpVote" name="CommentUpVote" id="CommentUpVote.<?php $sortedComments[$key]['IDcomment'] ?>" src="<?php echo IconsURL(GetCommentIconUpVote($voteComments,$sortedComments[$key]['IDcomment'])) ?>">

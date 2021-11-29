@@ -22,11 +22,11 @@
                             <input type='password' name='password'><br>
                         </li>
                         <li>
-                            <?php if (isset($Error)): ?> 
-                            <label class="error"><?php echo $Error ?></label><?php endif; ?>
+                            <input type='submit' value='Login' name='submit'>
                         </li>
                         <li>
-                            <input type='submit' value='Login' name='submit'>
+                            <?php if (isset($Error)): ?> 
+                            <label class="error"><?php echo $Error ?></label><?php endif; ?>
                         </li>
                     </ul>
                 </fieldset>

@@ -41,8 +41,11 @@
                             <?php if (array_key_exists('action',$Error)): ?> 
                             <label class="error"><?php echo $Error['action'] ?></label><?php endif; ?>
                         </li>
+                        <li>
+                            <label> </label>
+                            <input type='submit' value='Register' name='submit'>
+                        </li>
                     </ul>
-                    <input type='submit' value='Register' name='submit'>
                     <?php if (array_key_exists('ok',$info)): ?> 
                     <label class="ok"><?php echo $info['ok'] ?></label><?php endif; ?>
                            
