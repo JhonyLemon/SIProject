@@ -66,5 +66,13 @@ function GetCommentIconDownVote($voted,$id)
     return "DownVoteOFF";
 }
 
+function GetParentCommentText(&$sortedComments,&$key)
+{
+    if($sortedComments[$key]['IDparent']!=0)
+        for($i=$key-1; $i>=0; $i--)
+            if($sortedComments[$i]['IDcomment']==$sortedComments[$key]['IDparent'])
+                return $sortedComments[$i]['text'];
+}
+
 ?>
 

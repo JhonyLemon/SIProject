@@ -123,6 +123,9 @@
                     <?php foreach($sortedComments as $key => $value): ?>
                         <div class="comment">
                             <p>
+                                <?php if ($sortedComments[$key]['IDparent']!=0): ?>
+                                Odpowiada na: <?php echo GetParentCommentText($sortedComments,$key) ?><br>
+                                <?php endif; ?>
                                 User: <?php echo $sortedComments[$key]['login'] ?><br>
                                      <?php echo $sortedComments[$key]['text'] ?><br>
                                      <form onsubmit="onVoteComment(event)" id="FormComment.<?php echo $sortedComments[$key]['IDcomment'] ?>" name="VoteComment">
