@@ -113,6 +113,4 @@ function RandomID(&$db)
         return RandomID($db);
     }
 }
-
 ?>
-

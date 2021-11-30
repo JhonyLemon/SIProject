@@ -387,5 +387,4 @@ else if(array_key_exists('ID',$_POST) && isset($_SESSION['id']))
     $stmt = $db->prepare('SELECT posts.IDpost,title,IDphoto,ext,description,points FROM posts LEFT JOIN photos ON posts.IDpost=photos.IDpost WHERE posts.IDpost=:id');
     $stmt->bindValue(':id', $_GET['id']);
     $stmt->execute();
-
 ?>

@@ -1,7 +1,7 @@
 <?php
-if(isset($_SESSION))
+if (isset($_SESSION)) 
 {
-session_destroy();
-redirect('home');
+    session_destroy();
+    redirect('home');
 }
 ?>
