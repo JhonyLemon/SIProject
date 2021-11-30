@@ -20,7 +20,6 @@ function isImage(filename)
     case 'gif':
     case 'bmp':
     case 'png':
-    case 'tiff':
       return true;
   }
   return false;

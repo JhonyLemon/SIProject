@@ -74,5 +74,45 @@ function GetParentCommentText(&$sortedComments,&$key)
                 return $sortedComments[$i]['text'];
 }
 
+function RandomID(&$db)
+{
+
+    $stmt = $db->query("SELECT MIN(IDpost) FROM posts");
+    $min=$stmt->fetch();
+    $stmt = $db->query("SELECT MAX(IDpost) FROM posts");
+    $max=$stmt->fetch();
+    $id=mt_rand($min['0'],$max['0']);
+    $stmt = $db->prepare("SELECT IDpost FROM posts WHERE IDpost=(SELECT MIN(IDpost) FROM posts WHERE IDpost>:id)");
+    $stmt->bindValue(':id', $id);
+    $stmt->execute();
+    $next=$stmt->fetch();
+
+    $stmt = $db->prepare("SELECT IDpost FROM posts WHERE IDpost=(SELECT MAX(IDpost) FROM posts WHERE IDpost<:id)");
+    $stmt->bindValue(':id', $id);
+    $stmt->execute();
+    $previous=$stmt->fetch();
+
+    if($next && $previous && $next['0']-$id>$id-$previous['0'])
+    {
+        return $previous['0'];
+    }
+    else if($next && $previous && $next['0']-$id<$id-$previous['0'])
+    {
+        return $next['0'];
+    }
+    else if(!$next && $previous)
+    {
+        return $previous['0'];
+    }
+    else if(!$previous && $next)
+    {
+        return $next['0'];
+    }
+    else
+    {
+        return RandomID($db);
+    }
+}
+
 ?>
 
