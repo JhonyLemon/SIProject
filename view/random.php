@@ -103,31 +103,33 @@
             </div>
             <?php if (count($sortedComments) != 0) : ?>
                 <?php foreach ($sortedComments as $key => $value) : ?>
-                    <div class="comment">
-                        <p>
-                            <?php if ($sortedComments[$key]['IDparent'] != 0) : ?>
+                    <?php if ($sortedComments[$key]['IDparent'] != 0) : ?>
+                        <div class="comment-answer">
+                            <p>
                                 Odpowiada na: <?php echo GetParentCommentText($sortedComments, $key) ?><br>
-                            <?php endif; ?>
-                            User: <?php echo $sortedComments[$key]['login'] ?><br>
-                            <?php echo $sortedComments[$key]['text'] ?><br>
-                        <form onsubmit="onVoteComment(event)" id="FormComment.<?php echo $sortedComments[$key]['IDcomment'] ?>" name="VoteComment">
-                            <input onclick="onClickCommentVote(event)" type=image width="30" height="30" class="icons" value="UpVote" name="CommentUpVote" id="CommentUpVote.<?php $sortedComments[$key]['IDcomment'] ?>" src="<?php echo IconsURL(GetCommentIconUpVote($voteComments, $sortedComments[$key]['IDcomment'])) ?>">
-                            <input style="display:none" type="text" name="ID" value="" disabled=true>
-                            <?php echo $sortedComments[$key]['points'] ?>
-                            <input onclick="onClickCommentVote(event)" type=image width="30" height="30" class="icons" value="DownVote" name="CommentDownVote" id="CommentDownVote.<?php $sortedComments[$key]['IDcomment'] ?>" src="<?php echo IconsURL(GetCommentIconDownVote($voteComments, $sortedComments[$key]['IDcomment'])) ?>"><br>
-                        </form>
-                        <label id="<?php echo $sortedComments[$key]['IDcomment'] ?>" onclick="onClickAnswerComment(event)">Odpowiedz</label>
-                        <form style="display:none" onsubmit="onAnswer(event)" id="AnswerComment.<?php echo $sortedComments[$key]['IDcomment'] ?>" name="AnswerComment">
-                            <input style="display:none" type="text" name="ID" value="" disabled=true>
-                            <input type="text" name="text" value="" disabled=true>
-                            <input type=submit value="Odpowiedz" name="answer" id="CommentAnswer" disabled=true>
-                        </form>
-                        </p>
-                    </div>
-                <?php endforeach; ?>
-            <?php endif; ?>
-        </div>
-
+                            <?php else : ?>
+                            <div class="comment">
+                                <p>
+                                <?php endif; ?>
+                                User: <?php echo $sortedComments[$key]['login'] ?><br>
+                                <?php echo $sortedComments[$key]['text'] ?><br>
+                                <form onsubmit="onVoteComment(event)" id="FormComment.<?php echo $sortedComments[$key]['IDcomment'] ?>" name="VoteComment">
+                                    <input onclick="onClickCommentVote(event)" type=image class="icons" value="UpVote" name="CommentUpVote" id="CommentUpVote.<?php $sortedComments[$key]['IDcomment'] ?>" src="<?php echo IconsURL(GetCommentIconUpVote($voteComments, $sortedComments[$key]['IDcomment'])) ?>">
+                                    <input style="display:none" type="text" name="ID" value="" disabled=true>
+                                    <?php echo $sortedComments[$key]['points'] ?>
+                                    <input onclick="onClickCommentVote(event)" type=image class="icons" value="DownVote" name="CommentDownVote" id="CommentDownVote.<?php $sortedComments[$key]['IDcomment'] ?>" src="<?php echo IconsURL(GetCommentIconDownVote($voteComments, $sortedComments[$key]['IDcomment'])) ?>"><br>
+                                </form>
+                                <label id="<?php echo $sortedComments[$key]['IDcomment'] ?>" onclick="onClickAnswerComment(event)">Odpowiedz</label>
+                                <form style="display:none" onsubmit="onAnswer(event)" id="AnswerComment.<?php echo $sortedComments[$key]['IDcomment'] ?>" name="AnswerComment">
+                                    <input style="display:none" type="text" name="ID" value="" disabled=true>
+                                    <input type="text" name="text" value="" disabled=true>
+                                    <input type=submit value="Odpowiedz" name="answer" id="CommentAnswer" disabled=true>
+                                </form>
+                                </p>
+                            </div>
+                        <?php endforeach; ?>
+                    <?php endif; ?>
+                        </div>
     </section>
 </body>
 

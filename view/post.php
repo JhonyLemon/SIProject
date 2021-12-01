@@ -19,7 +19,6 @@
             ?>
         </div>
         <div class="list">
-
             <?php if (isset($_GET['id'])) : ?>
                 <?php if ($post = $stmt->fetch()) : ?>
                     <h1><?php $post['title'] ?></h1>
