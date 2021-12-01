@@ -10,7 +10,7 @@ define('_ICON_PATH', 'icons');
 
 require_once(_ROOT_PATH.DIRECTORY_SEPARATOR.'functions'.DIRECTORY_SEPARATOR.'library.php');
  
-$actions = array('home', 'register', 'login', 'lobby','post','settings','postval','users','random','logout','add','pageNotFound'); 
+$actions = array('home', 'register', 'login', 'lobby','post','profil','postval','users','random','logout','add','pageNotFound'); 
 $action = 'home'; 
 
 try { 

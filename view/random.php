@@ -25,11 +25,10 @@
                     <h1><?php $post['title'] ?></h1>
                     <?php
                     do {
-                        $row = PostURL($post);
                     ?>
                         <div class='element'>
-                            <img class='img' src="<?php echo $row['url'] ?>" alt="<?php echo $row['alt'] ?>" />
-                            <figcaption class='figpost'><?php echo $row['description'] ?></figcaption>
+                            <img class='img' src="<?php echo PostURL($post); ?>" alt="<?php echo $post['IDpost'] ?>" />
+                            <figcaption class='figpost'><?php echo $post['description'] ?></figcaption>
                         </div>
                     <?php
                     } while ($post = $stmt->fetch());

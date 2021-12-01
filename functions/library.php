@@ -18,11 +18,12 @@ return _ICON_PATH.DIRECTORY_SEPARATOR.$name.'.png';
 
 function PostURL($row)
 {
-$post=array();
-$post['url']=_PHOTO_PATH.DIRECTORY_SEPARATOR.$row['IDphoto'].'.'.$row['ext'];
-$post['alt']=$row['IDpost'];
-$post['description']=$row['description'];
-return $post;
+return _PHOTO_PATH.DIRECTORY_SEPARATOR.$row['IDphoto'].'.'.$row['ext'];
+}
+
+function LobbyURL($row)
+{
+return _PHOTO_PATH.DIRECTORY_SEPARATOR.$row['IDphoto'].'.'.$row['ext'];
 }
 
 function GetChildComments($IDparent,$i,$comments,&$children)
@@ -82,12 +83,12 @@ function RandomID(&$db)
     $stmt = $db->query("SELECT MAX(IDpost) FROM posts");
     $max=$stmt->fetch();
     $id=mt_rand($min['0'],$max['0']);
-    $stmt = $db->prepare("SELECT IDpost FROM posts WHERE IDpost=(SELECT MIN(IDpost) FROM posts WHERE IDpost>:id)");
+    $stmt = $db->prepare("SELECT IDpost FROM posts WHERE IDpost=(SELECT MIN(IDpost) FROM posts WHERE IDpost>=:id)");
     $stmt->bindValue(':id', $id);
     $stmt->execute();
     $next=$stmt->fetch();
 
-    $stmt = $db->prepare("SELECT IDpost FROM posts WHERE IDpost=(SELECT MAX(IDpost) FROM posts WHERE IDpost<:id)");
+    $stmt = $db->prepare("SELECT IDpost FROM posts WHERE IDpost=(SELECT MAX(IDpost) FROM posts WHERE IDpost<=:id)");
     $stmt->bindValue(':id', $id);
     $stmt->execute();
     $previous=$stmt->fetch();
@@ -99,6 +100,10 @@ function RandomID(&$db)
     else if($next && $previous && $next['0']-$id<$id-$previous['0'])
     {
         return $next['0'];
+    }
+    else if($previous['0'] == $next['0'])
+    {
+        return $id;
     }
     else if(!$next && $previous)
     {

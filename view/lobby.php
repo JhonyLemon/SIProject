@@ -12,20 +12,25 @@
 <body>
     <section>
         <div class="tiles">
-            <?php
-            while ($posts = $stmt->fetch()) {
-                // var_dump(_PHOTO_PATH.DIRECTORY_SEPARATOR.$posts['IDphoto'].'.'.$posts['ext']);
-                echo "
-                        <div onclick='onClick(event)' class='tile'>
-                        <img src=\"" . _PHOTO_PATH . DIRECTORY_SEPARATOR . $posts['IDphoto'] . '.' . $posts['ext'] . "\" alt=\"" . $posts['IDpost'] . "\"/>
-                        <figcaption class='figlobby'><div>{$posts['title']}</div>";
-                if ($posts['points'] >= 0)
-                    echo "<div style='color: greenyellow'>{$posts['points']}</div></figcaption>";
-                else
-                    echo "<div style='color: crimson'>{$posts['points']}</div></figcaption>";
-                echo "</div>";
-            }
-            ?>
+                <?php while ($posts = $stmt->fetch()): ?>
+                    <div onclick="onClick(event)" class="tile">
+                        <img src="<?php echo LobbyURL($posts); ?>" alt="<?php echo $posts['IDpost']; ?>">
+                        <figcaption class="figlobby">
+                            <div>
+                                <?php echo $posts['title']; ?>
+                            </div>
+                            <?php if($posts['points']>0): ?>
+                                <div style='color: greenyellow'>
+                                    <?php echo $posts['points']; ?>
+                                </div>
+                        </figcaption>
+                            <?php else: ?>
+                                <div style='color: crimson'><?php echo $posts['points']; ?>
+                            </div>
+                        </figcaption>
+                            <?php endif; ?>
+                    </div>
+                <?php endwhile; ?>
         </div>
     </section>
 </body>
