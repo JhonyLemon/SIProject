@@ -22,7 +22,7 @@
 
             <?php if (isset($_GET['id'])) : ?>
                 <?php if ($post = $stmt->fetch()) : ?>
-                    <h1><?php $post['title'] ?></h1>
+                    <h1><?php echo $post['title'] ?></h1>
                     <?php
                     do {
                     ?>

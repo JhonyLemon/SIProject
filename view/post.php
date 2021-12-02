@@ -21,12 +21,12 @@
         <div class="list">
             <?php if (isset($_GET['id'])) : ?>
                 <?php if ($post = $stmt->fetch()) : ?>
-                    <h1><?php $post['title'] ?></h1>
+                    <h1><?php echo $post['title'] ?></h1>
                     <?php
                     do {
                     ?>
                         <div class='element'>
-                            <img class='img' src="<?php echo PostURL($post) ?>" alt="<?php echo $post['alt'] ?>" />
+                            <img class='img' src="<?php echo PostURL($post) ?>" alt="<?php echo $post['IDpost'] ?>" />
                             <figcaption class='figpost'><?php echo $post['description'] ?></figcaption>
                         </div>
                     <?php
