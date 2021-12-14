@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Czas generowania: 14 Gru 2021, 09:19
+-- Czas generowania: 14 Gru 2021, 16:54
 -- Wersja serwera: 10.4.22-MariaDB
 -- Wersja PHP: 7.3.33
 
@@ -219,10 +219,12 @@ INSERT INTO `photos` (`IDpost`, `IDphoto`, `ext`, `description`) VALUES
 (21, 22, 'jpg', ''),
 (22, 23, 'png', ''),
 (23, 24, 'jpg', ''),
-(26, 27, 'jpg', ''),
-(26, 28, 'png', ''),
 (28, 30, 'jpg', 'Grafika test'),
-(29, 31, 'png', '');
+(29, 31, 'png', ''),
+(30, 32, 'jpg', ''),
+(30, 33, 'jpg', ''),
+(31, 34, 'jpg', ''),
+(32, 35, 'jpg', '');
 
 -- --------------------------------------------------------
 
@@ -246,9 +248,11 @@ INSERT INTO `posts` (`IDpost`, `title`, `points`, `valid`) VALUES
 (21, 'Grafika', 0, 0),
 (22, 'Wzorek', 1, 1),
 (23, 'Ładne autka', 2, 1),
-(26, 'qwerty', 0, 0),
 (28, 'Obraz1', 1, 1),
-(29, 'Test2', 0, 0);
+(29, 'Test2', 0, 0),
+(30, 'Stare VS Nowe', 0, 0),
+(31, 'Ahhh zima', 0, 0),
+(32, 'Kochamy Kremówki', 0, 0);
 
 -- --------------------------------------------------------
 
@@ -270,9 +274,11 @@ INSERT INTO `userposts` (`IDpost`, `IDuser`) VALUES
 (21, 5),
 (22, 5),
 (23, 2),
-(26, 5),
 (28, 5),
-(29, 1);
+(29, 1),
+(30, 3),
+(31, 3),
+(32, 2);
 
 -- --------------------------------------------------------
 
@@ -374,13 +380,13 @@ ALTER TABLE `comments`
 -- AUTO_INCREMENT dla tabeli `photos`
 --
 ALTER TABLE `photos`
-  MODIFY `IDphoto` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
+  MODIFY `IDphoto` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=36;
 
 --
 -- AUTO_INCREMENT dla tabeli `posts`
 --
 ALTER TABLE `posts`
-  MODIFY `IDpost` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
+  MODIFY `IDpost` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
 
 --
 -- AUTO_INCREMENT dla tabeli `users`
