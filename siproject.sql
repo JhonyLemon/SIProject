@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Czas generowania: 01 Gru 2021, 23:43
+-- Czas generowania: 14 Gru 2021, 09:19
 -- Wersja serwera: 10.4.22-MariaDB
 -- Wersja PHP: 7.3.33
 
@@ -42,9 +42,14 @@ CREATE TABLE `comments` (
 
 INSERT INTO `comments` (`IDcomment`, `IDparent`, `IDuser`, `IDpost`, `text`, `points`) VALUES
 (10, 0, 1, 23, 'Ładne autka', 0),
-(11, 10, 1, 23, 'Nom ładne', 0),
+(11, 10, 1, 23, 'Nom ładne', 1),
 (12, 0, 1, 23, 'XYZ', 0),
-(13, 11, 1, 23, 'Ideolo', 0);
+(13, 11, 1, 23, 'Ideolo', 0),
+(14, 0, 5, 23, 'Bardzo ładne', 0),
+(15, 13, 5, 23, 'Czemu sobie odpowiadasz?', 0),
+(16, 0, 5, 22, 'Super', 0),
+(17, 15, 5, 23, 'Jest okey', 0),
+(18, 0, 5, 23, 'Adres', 0);
 
 -- --------------------------------------------------------
 
@@ -63,7 +68,9 @@ CREATE TABLE `favoritedposts` (
 
 INSERT INTO `favoritedposts` (`IDuser`, `IDpost`) VALUES
 (2, 22),
-(1, 23);
+(1, 23),
+(5, 23),
+(1, 22);
 
 -- --------------------------------------------------------
 
@@ -76,6 +83,13 @@ CREATE TABLE `likedcomments` (
   `IDuser` int(11) UNSIGNED NOT NULL,
   `vote` tinyint(1) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Zrzut danych tabeli `likedcomments`
+--
+
+INSERT INTO `likedcomments` (`IDcomment`, `IDuser`, `vote`) VALUES
+(11, 5, 1);
 
 --
 -- Wyzwalacze `likedcomments`
@@ -142,7 +156,10 @@ CREATE TABLE `likedposts` (
 INSERT INTO `likedposts` (`IDuser`, `IDpost`, `vote`) VALUES
 (2, 22, 1),
 (2, 20, 1),
-(1, 23, 1);
+(1, 23, 1),
+(1, 20, 1),
+(5, 23, 1),
+(1, 28, 1);
 
 --
 -- Wyzwalacze `likedposts`
@@ -201,7 +218,11 @@ INSERT INTO `photos` (`IDpost`, `IDphoto`, `ext`, `description`) VALUES
 (20, 21, 'jpeg', ''),
 (21, 22, 'jpg', ''),
 (22, 23, 'png', ''),
-(23, 24, 'jpg', '');
+(23, 24, 'jpg', ''),
+(26, 27, 'jpg', ''),
+(26, 28, 'png', ''),
+(28, 30, 'jpg', 'Grafika test'),
+(29, 31, 'png', '');
 
 -- --------------------------------------------------------
 
@@ -221,10 +242,13 @@ CREATE TABLE `posts` (
 --
 
 INSERT INTO `posts` (`IDpost`, `title`, `points`, `valid`) VALUES
-(20, 'Test', 1, 0),
+(20, 'Test', 2, 0),
 (21, 'Grafika', 0, 0),
 (22, 'Wzorek', 1, 1),
-(23, 'Ładne autka', 1, 1);
+(23, 'Ładne autka', 2, 1),
+(26, 'qwerty', 0, 0),
+(28, 'Obraz1', 1, 1),
+(29, 'Test2', 0, 0);
 
 -- --------------------------------------------------------
 
@@ -245,7 +269,10 @@ INSERT INTO `userposts` (`IDpost`, `IDuser`) VALUES
 (20, 5),
 (21, 5),
 (22, 5),
-(23, 2);
+(23, 2),
+(26, 5),
+(28, 5),
+(29, 1);
 
 -- --------------------------------------------------------
 
@@ -268,11 +295,11 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`IDuser`, `login`, `email`, `password`, `permission`, `birthday`, `points`) VALUES
-(1, 'adam', 'adamnosol@gmail.com', '$2y$10$ZjzWwpc30STeWbPRxMNmied/O1XisDhFgt0L5FE/FMFGNLYRkBskG', 'admin', NULL, 4),
+(1, 'adam', 'adamnosol@gmail.com', '$2y$10$ZjzWwpc30STeWbPRxMNmied/O1XisDhFgt0L5FE/FMFGNLYRkBskG', 'admin', NULL, 6),
 (2, 'kamil', 'kamil@wp.pl', '$2y$10$X2IQhv79RYrnVNvyRv/sH.wDvj.0QuSWnLxJxThJ7u6b1Udx9N7BK', 'user', NULL, 2),
 (3, 'kacper', 'kamil@wp.pl', '$2y$10$UNF2LDzazIQTLC1rwnXUaeulQzE.F1dOzcLR7r7RXNqY7RF5ezlzi', 'user', NULL, 0),
-(4, 'fda', 'fdsa@wp.pl', '$2y$10$lBlGWNURbQIqsVBOEUa3Y.GATv5DMuZpkWiIEpUsru6.HGAYCLYFa', 'user', NULL, 0),
-(5, 'user', 'user@xyz.pl', '$2y$10$R4qYtTU9pRXdvvEHDVJ.iuE0ebn9sE/apKu7OJYx1p9MYe1eAXJ2.', 'user', NULL, 0);
+(5, 'user', 'user@xyz.pl', '$2y$10$R4qYtTU9pRXdvvEHDVJ.iuE0ebn9sE/apKu7OJYx1p9MYe1eAXJ2.', 'user', NULL, 10),
+(6, 'bruno', 'bruno@xyz.pl', '$2y$10$HsSMmsX9vjQdn8mwkDlTy.H7mGhQNNamYvu0ta7cyeIsnq4/rPbx6', 'user', NULL, 0);
 
 --
 -- Indeksy dla zrzutów tabel
@@ -341,25 +368,25 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT dla tabeli `comments`
 --
 ALTER TABLE `comments`
-  MODIFY `IDcomment` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `IDcomment` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- AUTO_INCREMENT dla tabeli `photos`
 --
 ALTER TABLE `photos`
-  MODIFY `IDphoto` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
+  MODIFY `IDphoto` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
 
 --
 -- AUTO_INCREMENT dla tabeli `posts`
 --
 ALTER TABLE `posts`
-  MODIFY `IDpost` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
+  MODIFY `IDpost` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
 
 --
 -- AUTO_INCREMENT dla tabeli `users`
 --
 ALTER TABLE `users`
-  MODIFY `IDuser` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `IDuser` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- Ograniczenia dla zrzutów tabel
