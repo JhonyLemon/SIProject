@@ -21,7 +21,7 @@
         <?php elseif ($_GET['show'] == 'favorited') : ?>
             <?php include(_ROOT_PATH . DIRECTORY_SEPARATOR . 'view' . DIRECTORY_SEPARATOR . 'favorited.php'); ?>
         <?php elseif ($_GET['show'] == 'self') : ?>
-            <?php include(_ROOT_PATH . DIRECTORY_SEPARATOR . 'view' . DIRECTORY_SEPARATOR . 'favorited.php'); ?>
+            <?php include(_ROOT_PATH . DIRECTORY_SEPARATOR . 'view' . DIRECTORY_SEPARATOR . 'self.php'); ?>
         <?php endif; ?>
     </section>
 </body>
