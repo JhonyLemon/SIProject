@@ -27,12 +27,12 @@
                                 <?php echo $posts['title']; ?>
                             </div>
                             <?php if($posts['points']>0): ?>
-                                <div style='color: greenyellow'>
+                                <div class='postplus'>
                                     <?php echo $posts['points']; ?>
                                 </div>
                         </figcaption>
                             <?php else: ?>
-                                <div style='color: crimson'><?php echo $posts['points']; ?>
+                                <div class='postminus'><?php echo $posts['points']; ?>
                             </div>
                         </figcaption>
                             <?php endif; ?>

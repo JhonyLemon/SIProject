@@ -10,7 +10,7 @@ html,body{
 header{
     position: fixed;
     z-index: 10;
-    top:0;
+    top: 0;
     left: 0;
     right: 0;
     border-top-left-radius: 10px;
@@ -41,8 +41,7 @@ footer{
 
 #buttons{
     position: relative;
-    left: 0.5%;
-    margin-left: 1%;
+    left: 1.5%;
     width: 90%;
     height: 100%;
 } 
@@ -64,6 +63,7 @@ footer{
 
 .button:hover{
     text-decoration: underline;
+    color: orange;
 }
 
 .logo
@@ -153,7 +153,6 @@ input[type="submit"]{
     margin-top: 8px;
     margin-bottom: 8px;
     padding: 6px;
-    
 }
 
 label {
@@ -227,23 +226,20 @@ h2{
     width: 190px;
 }
 
-.closebtn {
-    margin-left: 15px;
-    color: white;
-    font-weight: bold;
-    float: right;
-    font-size: 22px;
-    line-height: 20px;
-    cursor: pointer;
-    transition: 0.3s;
-} 
-
 .figlobby{
     margin-left: auto;  
     margin-right: auto;
     margin-bottom: 20px;
     padding-bottom: 10px;
     text-align: center;
+}
+
+.postplus{
+    color: greenyellow;
+}
+
+.postminus{
+    color: crimson;
 }
   
 .tiles {
@@ -311,7 +307,7 @@ h2{
     width: 80%;
 }
   
-  /* The Close Button */
+  /* The Close Button on modal */
 .close {
     color: #aaaaaa;
     float: right;
