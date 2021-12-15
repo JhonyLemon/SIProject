@@ -113,10 +113,18 @@
                                         User: <?php echo $sortedComments[$key]['login'] ?><br>
                                         <?php echo $sortedComments[$key]['text'] ?><br>
                                         <form onsubmit="onVoteComment(event)" id="FormComment.<?php echo $sortedComments[$key]['IDcomment'] ?>" name="VoteComment">
+                                            <?php if (isset($voteComments)) : ?>
                                             <input onclick="onClickCommentVote(event)" type=image class="icons" value="UpVote" name="CommentUpVote" id="CommentUpVote.<?php $sortedComments[$key]['IDcomment'] ?>" src="<?php echo IconsURL(GetCommentIconUpVote($voteComments, $sortedComments[$key]['IDcomment'])) ?>">
+                                            <?php else : ?>
+                                            <input type=image class="icons" value="UpVote" name="CommentUpVote" id="CommentUpVote.<?php $sortedComments[$key]['IDcomment'] ?>" src="<?php echo _ICON_PATH.DIRECTORY_SEPARATOR.'UpVoteOFF.png';  ?>">
+                                            <?php endif; ?>
                                             <input style="display:none" type="text" name="ID" value="" disabled=true>
                                             <?php echo $sortedComments[$key]['points'] ?>
+                                            <?php if (isset($voteComments)) : ?>
                                             <input onclick="onClickCommentVote(event)" type=image class="icons" value="DownVote" name="CommentDownVote" id="CommentDownVote.<?php $sortedComments[$key]['IDcomment'] ?>" src="<?php echo IconsURL(GetCommentIconDownVote($voteComments, $sortedComments[$key]['IDcomment'])) ?>"><br>
+                                            <?php else : ?>
+                                            <input type=image class="icons" value="UpVote" name="CommentUpVote" id="CommentUpVote.<?php $sortedComments[$key]['IDcomment'] ?>" src="<?php echo _ICON_PATH.DIRECTORY_SEPARATOR.'DownVoteOFF.png';  ?>">    
+                                            <?php endif; ?>    
                                         </form>
                                         <label id="<?php echo $sortedComments[$key]['IDcomment'] ?>" onclick="onClickAnswerComment(event)">Odpowiedz</label>
                                         <form style="display:none" onsubmit="onAnswer(event)" id="AnswerComment.<?php echo $sortedComments[$key]['IDcomment'] ?>" name="AnswerComment">
